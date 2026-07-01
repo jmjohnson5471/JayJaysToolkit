@@ -1,0 +1,9 @@
+{
+  "Name": "Quick System Reference",
+  "Category": "Computer Inventory",
+  "Description": "Ultra-fast batch version of the quick reference screen.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}

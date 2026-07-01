@@ -1,8 +1,8 @@
 {
-  "Id": "QuickSystemReference",
-  "Name": "Quick System Reference",
+  "Id": "QuickSystemReferenceBAT",
+  "Name": "Quick System Reference BAT",
   "Version": "1.0.0",
-  "Description": "Standalone quick system reference screen with copy, export, and refresh options.",
+  "Description": "Ultra-fast batch-based quick system reference.",
   "Author": "JayJaysToolkit",
   "Enabled": true
 }
