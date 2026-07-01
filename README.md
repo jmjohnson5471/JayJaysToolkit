@@ -87,3 +87,14 @@ irm https://christitus.com/win | iex
 ```
 
 It requires confirmation before running.
+
+
+## PortableApps path fix
+
+Portable tools now download to the toolkit-managed folder instead of the user's Desktop:
+
+```text
+PortableApps/
+```
+
+This fixes systems where Desktop is redirected to OneDrive or missing.
