@@ -1,0 +1,8 @@
+{
+  "Id": "SystemInfoPlus",
+  "Name": "System Info Plus",
+  "Version": "1.0.0",
+  "Description": "Detailed Windows and hardware inventory with Windows version, masked product key, activation, TPM, Secure Boot, drives, network, and installed software.",
+  "Author": "JayJaysToolkit",
+  "Enabled": true
+}

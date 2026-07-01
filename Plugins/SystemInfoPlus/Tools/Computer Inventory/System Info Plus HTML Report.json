@@ -1,0 +1,9 @@
+{
+  "Name": "System Info Plus HTML Report",
+  "Category": "Computer Inventory",
+  "Description": "Creates a detailed HTML report with Windows edition/version/build, masked product key, activation, serial, BIOS, CPU, RAM, disks, network, TPM, Secure Boot, Defender, BitLocker, printers, local admins, and installed software.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}
