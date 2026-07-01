@@ -5,5 +5,7 @@
   "RunAsAdmin": false,
   "Hidden": false,
   "Arguments": "",
-  "ExecutionMode": "Console"
+  "ExecutionMode": "Console",
+  "Confirm": true,
+  "ConfirmMessage": "This will force-close and restart explorer.exe, closing all open File Explorer windows and briefly hiding the taskbar/desktop icons. Continue?"
 }

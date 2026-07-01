@@ -5,5 +5,7 @@
   "RunAsAdmin": true,
   "Hidden": false,
   "Arguments": "",
-  "ExecutionMode": "Console"
+  "ExecutionMode": "Console",
+  "Confirm": true,
+  "ConfirmMessage": "This stops the Windows Update and BITS services and deletes the SoftwareDistribution download cache. Any in-progress updates will need to restart. Continue?"
 }

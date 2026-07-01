@@ -5,5 +5,7 @@
   "RunAsAdmin": true,
   "Hidden": false,
   "Arguments": "",
-  "ExecutionMode": "Console"
+  "ExecutionMode": "Console",
+  "Confirm": true,
+  "ConfirmMessage": "This schedules a full disk check (chkdsk /f /r) on the C: drive at next reboot. It can take a long time and the machine will be unusable for a scan on reboot. Continue?"
 }
