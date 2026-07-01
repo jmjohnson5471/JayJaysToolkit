@@ -1,0 +1,8 @@
+{
+  "Id": "DeploymentDesigner",
+  "Name": "Deployment Designer",
+  "Version": "1.0.0",
+  "Description": "Offline JayJaysToolkit deployment designer for autounattend.xml and post-install planning.",
+  "Author": "JayJaysToolkit",
+  "Enabled": true
+}

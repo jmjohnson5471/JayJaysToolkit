@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>JayJaysToolkit Deployment Designer</title>
+<style>
+:root{--bg:#101214;--panel:#1b1f24;--panel2:#242a31;--text:#e8edf2;--muted:#9ba7b4;--green:#00dc78;--warn:#ffbd5a}
+*{box-sizing:border-box} body{margin:0;font-family:Segoe UI,Arial;background:var(--bg);color:var(--text)}
+header{padding:18px 24px;background:#0b0e10;border-bottom:1px solid #2b3138}
+h1{margin:0;color:var(--green);font-size:26px} small{color:var(--muted)}
+main{display:grid;grid-template-columns:430px 1fr;gap:16px;padding:16px}
+.panel{background:var(--panel);border:1px solid #2c333b;border-radius:12px;padding:14px;margin-bottom:12px}
+h2{font-size:16px;margin:0 0 10px;color:var(--green)}
+label{display:block;margin:9px 0 4px;color:#d7dee6}
+input,select,textarea{width:100%;padding:8px;border:1px solid #3b4550;border-radius:8px;background:#0e1114;color:var(--text)}
+textarea{min-height:70px}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.check{display:flex;gap:8px;align-items:center;margin:8px 0}.check input{width:auto}
+button{border:0;border-radius:8px;padding:9px 12px;background:var(--green);font-weight:700;cursor:pointer;margin:4px}
+button.secondary{background:#3a4652;color:var(--text)} button.warn{background:var(--warn)}
+pre{background:#050608;color:#c7f7dd;border:1px solid #2a3036;border-radius:12px;padding:14px;white-space:pre;overflow:auto;min-height:650px}
+.tabs button{background:#28313a;color:var(--text)} .hidden{display:none}.note{border-left:4px solid var(--warn);background:#251d10;color:#ffd999;padding:10px;border-radius:8px}
+</style>
+</head>
+<body>
+<header><h1>JayJaysToolkit Deployment Designer</h1><small>Offline autounattend.xml + deployment profile builder</small></header>
+<main>
+<div>
+ <div class="panel">
+  <h2>Profile</h2>
+  <label>Template</label><select id="template" onchange="applyTemplate()">
+   <option value="business">Business Workstation</option><option value="home">Home PC</option><option value="kiosk">Kiosk Base</option><option value="osdcloud">OSDCloud Helper</option>
+  </select>
+  <div class="row"><div><label>Edition</label><select id="edition"><option>Windows 11 Pro</option><option>Windows 11 Home</option><option>Windows 10 Pro</option><option>Windows 10 Home</option></select></div><div><label>Arch</label><select id="arch"><option value="amd64">amd64</option><option value="x86">x86</option></select></div></div>
+  <div class="row"><div><label>Locale</label><input id="locale" value="en-US"></div><div><label>Keyboard</label><input id="keyboard" value="0409:00000409"></div></div>
+  <label>Time Zone</label><input id="timezone" value="Eastern Standard Time">
+  <label>Computer Name</label><input id="computerName" placeholder="Optional">
+  <label>Product Key</label><input id="productKey" placeholder="Optional">
+ </div>
+
+ <div class="panel">
+  <h2>OOBE</h2>
+  <label class="check"><input type="checkbox" id="hideEula" checked>Accept/Hide EULA</label>
+  <label class="check"><input type="checkbox" id="hideOnline" checked>Hide online account screens</label>
+  <label class="check"><input type="checkbox" id="bypassNetwork" checked>Bypass network requirement</label>
+  <label class="check"><input type="checkbox" id="skipMachine" checked>Skip machine OOBE</label>
+  <label class="check"><input type="checkbox" id="skipUser">Skip user OOBE</label>
+ </div>
+
+ <div class="panel">
+  <h2>Local Admin</h2>
+  <label class="check"><input type="checkbox" id="createUser" checked>Create local admin</label>
+  <div class="row"><div><label>Username</label><input id="username" value="Admin"></div><div><label>Password</label><input id="password" type="password"></div></div>
+  <label class="check"><input type="checkbox" id="autoLogon">Auto-logon once</label>
+ </div>
+
+ <div class="panel">
+  <h2>First Logon Actions</h2>
+  <label class="check"><input type="checkbox" id="disableConsumer" checked>Disable consumer features</label>
+  <label class="check"><input type="checkbox" id="enableRdp">Enable Remote Desktop</label>
+  <label class="check"><input type="checkbox" id="launchToolkit">Add note to launch JayJaysToolkit installer</label>
+  <label class="check"><input type="checkbox" id="ctt">Add Chris Titus utility note</label>
+  <label>Custom PowerShell command</label><textarea id="custom"></textarea>
+  <div class="note">Disk partitioning/wipe is intentionally omitted. Add only after VM testing.</div>
+ </div>
+
+ <div class="panel">
+  <button onclick="generate()">Generate</button><button onclick="downloadXml()">Download autounattend.xml</button><button class="secondary" onclick="copyText('xml')">Copy XML</button>
+  <button class="secondary" onclick="downloadProfile()">Download Profile JSON</button><button class="secondary" onclick="loadProfileClick()">Load Profile JSON</button>
+  <input type="file" id="profileFile" class="hidden" onchange="loadProfile(event)">
+ </div>
+</div>
+<div>
+ <div class="tabs"><button onclick="showTab('xml')">XML</button><button onclick="showTab('plan')">Deployment Plan</button></div>
+ <pre id="xml"></pre><pre id="plan" class="hidden"></pre>
+</div>
+</main>
+<script>
+function v(id){return document.getElementById(id).value.trim()} function c(id){return document.getElementById(id).checked}
+function esc(s){return String(s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&apos;")}
+function cmdEsc(s){return esc(s).replaceAll("\n","; ")}
+function applyTemplate(){let t=v('template'); if(t==='home'){edition.value='Windows 11 Home';createUser.checked=true;enableRdp.checked=false}
+ if(t==='business'){edition.value='Windows 11 Pro';createUser.checked=true;enableRdp.checked=true;disableConsumer.checked=true}
+ if(t==='kiosk'){edition.value='Windows 11 Pro';createUser.checked=true;skipUser.checked=true;enableRdp.checked=true}
+ if(t==='osdcloud'){edition.value='Windows 11 Pro';createUser.checked=true;launchToolkit.checked=true;enableRdp.checked=true}
+ generate();}
+function firstCommands(){let a=[],o=1;
+ if(c('bypassNetwork'))a.push([o++,'Bypass network requirement','reg add HKLM\\SYSTEM\\Setup\\LabConfig /v BypassNRO /t REG_DWORD /d 1 /f']);
+ if(c('disableConsumer'))a.push([o++,'Disable consumer features','reg add HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent /v DisableWindowsConsumerFeatures /t REG_DWORD /d 1 /f']);
+ if(c('enableRdp'))a.push([o++,'Enable Remote Desktop','powershell -NoProfile -ExecutionPolicy Bypass -Command "Set-ItemProperty \\'HKLM:\\System\\CurrentControlSet\\Control\\Terminal Server\\' -Name fDenyTSConnections -Value 0; Enable-NetFirewallRule -DisplayGroup \\'Remote Desktop\\'"']);
+ if(c('launchToolkit'))a.push([o++,'JayJaysToolkit installer note','powershell -NoProfile -ExecutionPolicy Bypass -Command "Write-Host \\'Run JayJaysToolkit: irm https://raw.githubusercontent.com/jmjohnson5471/JayJaysToolkit/main/install.ps1 | iex\\'"']);
+ if(c('ctt'))a.push([o++,'Chris Titus utility note','powershell -NoProfile -ExecutionPolicy Bypass -Command "Write-Host \\'Optional: irm https://christitus.com/win | iex\\'"']);
+ if(v('custom'))a.push([o++,'Custom command','powershell -NoProfile -ExecutionPolicy Bypass -Command "'+v('custom').replaceAll('"','\\"')+'"']);
+ return a;}
+function xmlFirst(){let a=firstCommands(); if(!a.length)return ''; let s='\n      <FirstLogonCommands>'; for(let x of a){s+=`\n        <SynchronousCommand wcm:action="add"><Order>${x[0]}</Order><Description>${esc(x[1])}</Description><CommandLine>${cmdEsc(x[2])}</CommandLine></SynchronousCommand>`} return s+'\n      </FirstLogonCommands>'}
+function xmlUser(){if(!c('createUser'))return '';let pass=v('password')?`\n            <Password><Value>${esc(v('password'))}</Value><PlainText>true</PlainText></Password>`:'';return `\n      <UserAccounts><LocalAccounts><LocalAccount wcm:action="add"><Name>${esc(v('username')||'Admin')}</Name><Group>Administrators</Group><DisplayName>${esc(v('username')||'Admin')}</DisplayName>${pass}</LocalAccount></LocalAccounts></UserAccounts>`}
+function xmlAuto(){if(!c('autoLogon')||!v('password'))return '';return `\n      <AutoLogon><Username>${esc(v('username')||'Admin')}</Username><Enabled>true</Enabled><LogonCount>1</LogonCount><Password><Value>${esc(v('password'))}</Value><PlainText>true</PlainText></Password></AutoLogon>`}
+function xmlProduct(){return v('productKey')?`\n        <ProductKey><Key>${esc(v('productKey'))}</Key><WillShowUI>OnError</WillShowUI></ProductKey>`:''}
+function xmlImage(){return `\n      <ImageInstall><OSImage><InstallFrom><MetaData wcm:action="add"><Key>/IMAGE/NAME</Key><Value>${esc(v('edition'))}</Value></MetaData></InstallFrom><InstallToAvailablePartition>true</InstallToAvailablePartition></OSImage></ImageInstall>`}
+function xmlComputer(){return v('computerName')?`\n      <ComputerName>${esc(v('computerName'))}</ComputerName>`:''}
+function generate(){
+let arch=v('arch'), loc=esc(v('locale')||'en-US'), kb=esc(v('keyboard')||'0409:00000409'), tz=esc(v('timezone')||'Eastern Standard Time');
+let xml=`<?xml version="1.0" encoding="utf-8"?>
+<unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+  <settings pass="windowsPE">
+    <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="${arch}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <SetupUILanguage><UILanguage>${loc}</UILanguage></SetupUILanguage><InputLocale>${kb}</InputLocale><SystemLocale>${loc}</SystemLocale><UILanguage>${loc}</UILanguage><UserLocale>${loc}</UserLocale>
+    </component>
+    <component name="Microsoft-Windows-Setup" processorArchitecture="${arch}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">${xmlProduct()}${xmlImage()}
+      <UserData><AcceptEula>true</AcceptEula></UserData>
+    </component>
+  </settings>
+  <settings pass="specialize">
+    <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="${arch}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">${xmlComputer()}<TimeZone>${tz}</TimeZone></component>
+  </settings>
+  <settings pass="oobeSystem">
+    <component name="Microsoft-Windows-International-Core" processorArchitecture="${arch}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <InputLocale>${kb}</InputLocale><SystemLocale>${loc}</SystemLocale><UILanguage>${loc}</UILanguage><UserLocale>${loc}</UserLocale>
+    </component>
+    <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="${arch}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <OOBE><HideEULAPage>${c('hideEula')}</HideEULAPage><HideOnlineAccountScreens>${c('hideOnline')}</HideOnlineAccountScreens><HideWirelessSetupInOOBE>${c('bypassNetwork')}</HideWirelessSetupInOOBE><NetworkLocation>Work</NetworkLocation><ProtectYourPC>3</ProtectYourPC><SkipMachineOOBE>${c('skipMachine')}</SkipMachineOOBE><SkipUserOOBE>${c('skipUser')}</SkipUserOOBE></OOBE>${xmlUser()}${xmlAuto()}${xmlFirst()}
+    </component>
+  </settings>
+</unattend>`;
+document.getElementById('xml').textContent=xml;
+document.getElementById('plan').textContent=`Profile: ${v('template')}\nEdition: ${v('edition')}\nLocal admin: ${c('createUser')?v('username'):'No'}\nActions:\n`+firstCommands().map(x=>` ${x[0]}. ${x[1]} - ${x[2]}`).join('\n')+'\n\nNext steps:\n1. Save as autounattend.xml\n2. Put at root of Windows install USB\n3. Test in VM before production\n4. Keep passwords out of public repos';
+return xml;}
+function downloadXml(){let blob=new Blob([generate()],{type:'application/xml'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='autounattend.xml';a.click();}
+function copyText(id){navigator.clipboard.writeText(document.getElementById(id).textContent).then(()=>alert('Copied.'))}
+function showTab(id){xml.classList.toggle('hidden',id!=='xml');plan.classList.toggle('hidden',id!=='plan');}
+function profile(){let ids=['template','edition','arch','locale','keyboard','timezone','computerName','productKey','hideEula','hideOnline','bypassNetwork','skipMachine','skipUser','createUser','username','password','autoLogon','disableConsumer','enableRdp','launchToolkit','ctt','custom'];let o={};for(let id of ids){let e=document.getElementById(id);o[id]=e.type==='checkbox'?e.checked:e.value}return o}
+function downloadProfile(){let blob=new Blob([JSON.stringify(profile(),null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='deployment-profile.json';a.click()}
+function loadProfileClick(){profileFile.click()} function loadProfile(ev){let f=ev.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{let o=JSON.parse(r.result);for(let k in o){let e=document.getElementById(k);if(e){if(e.type==='checkbox')e.checked=o[k];else e.value=o[k]}}generate()};r.readAsText(f)}
+document.querySelectorAll('input,select,textarea').forEach(e=>e.addEventListener('input',generate));generate();
+</script>
+</body>
+</html>

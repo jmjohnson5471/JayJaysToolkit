@@ -1,0 +1,9 @@
+{
+  "Name": "Launch Deployment Designer",
+  "Category": "Windows Imaging",
+  "Description": "Opens the offline Deployment Designer for generating autounattend.xml and deployment profiles.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}
