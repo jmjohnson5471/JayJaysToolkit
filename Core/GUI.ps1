@@ -29,9 +29,42 @@ function Run-Tool {
     Append-Output ""
 
     try {
+        if ($Tool.ExecutionMode -eq "Interactive") {
+            if ($Tool.Extension -eq ".ps1") {
+                $args = "-NoProfile -ExecutionPolicy Bypass -NoExit -File `"$($Tool.Path)`" $($Tool.Arguments)"
+                if ($Tool.RunAsAdmin) {
+                    Start-Process powershell.exe -Verb RunAs -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args
+                } else {
+                    Start-Process powershell.exe -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args
+                }
+                Append-Output "Launched interactive PowerShell window."
+                return
+            }
+            elseif ($Tool.Extension -in ".bat",".cmd") {
+                $args = "/k `"$($Tool.Path)`" $($Tool.Arguments)"
+                if ($Tool.RunAsAdmin) {
+                    Start-Process cmd.exe -Verb RunAs -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args
+                } else {
+                    Start-Process cmd.exe -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args
+                }
+                Append-Output "Launched interactive CMD window."
+                return
+            }
+        }
+
         if ($Tool.ExecutionMode -eq "External" -or $Tool.Extension -in ".exe",".msi",".url") {
             if ($Tool.Extension -eq ".url") { Start-Process $Tool.Path }
             elseif ($Tool.Extension -eq ".msi") { Start-Process msiexec.exe -Verb RunAs -ArgumentList "/i `"$($Tool.Path)`" $($Tool.Arguments)" }
+            elseif ($Tool.Extension -eq ".ps1") {
+                $args = "-NoProfile -ExecutionPolicy Bypass -File `"$($Tool.Path)`" $($Tool.Arguments)"
+                if ($Tool.RunAsAdmin) { Start-Process powershell.exe -Verb RunAs -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args }
+                else { Start-Process powershell.exe -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args }
+            }
+            elseif ($Tool.Extension -in ".bat",".cmd") {
+                $args = "/c `"$($Tool.Path)`" $($Tool.Arguments)"
+                if ($Tool.RunAsAdmin) { Start-Process cmd.exe -Verb RunAs -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args }
+                else { Start-Process cmd.exe -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args }
+            }
             elseif ($Tool.RunAsAdmin) { Start-Process -FilePath $Tool.Path -Verb RunAs -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $Tool.Arguments }
             else { Start-Process -FilePath $Tool.Path -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $Tool.Arguments }
             Append-Output "Launched external tool."

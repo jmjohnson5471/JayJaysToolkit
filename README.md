@@ -44,3 +44,10 @@ This build includes the full Backup and Restore category:
 - Restore Checklist HTML Export
 
 These tools appear automatically in the GUI under **Backup and Restore**.
+
+
+## Interactive backup/restore fix
+
+Backup and restore tools are now set to `ExecutionMode: Interactive`.
+
+This is important because those scripts use prompts like `Read-Host` and long-running `robocopy` output. They now launch in their own PowerShell window and remain open instead of hanging inside the embedded live console.

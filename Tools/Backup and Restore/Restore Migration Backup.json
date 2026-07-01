@@ -5,5 +5,5 @@
   "RunAsAdmin": true,
   "Hidden": false,
   "Arguments": "",
-  "ExecutionMode": "Console"
+  "ExecutionMode": "Interactive"
 }
