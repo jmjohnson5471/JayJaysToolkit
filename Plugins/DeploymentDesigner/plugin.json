@@ -1,0 +1,8 @@
+{
+  "Id": "DeploymentDesigner",
+  "Name": "Deployment Designer",
+  "Version": "3.1.0",
+  "Description": "PowerShell WinForms GUI deployment designer with selectable export folder destination.",
+  "Author": "JayJaysToolkit",
+  "Enabled": true
+}
