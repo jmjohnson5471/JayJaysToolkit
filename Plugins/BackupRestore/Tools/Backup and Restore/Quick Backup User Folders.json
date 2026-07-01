@@ -1,0 +1,9 @@
+{
+  "Name": "Quick Backup User Folders",
+  "Category": "Backup and Restore",
+  "Description": "Quickly backs up Desktop, Documents, Downloads, and Pictures. Shows a numbered list of attached drives (flash/USB, network, fixed) to pick from, or accepts a NAS path. Confirms before copying, and lets you pick a different destination if you say no.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}

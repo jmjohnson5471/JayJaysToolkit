@@ -5,5 +5,7 @@
   "RunAsAdmin": true,
   "Hidden": false,
   "Arguments": "",
-  "ExecutionMode": "Interactive"
+  "ExecutionMode": "Interactive",
+  "Confirm": true,
+  "ConfirmMessage": "This copies backup data OVER the current user's Desktop/Documents/Downloads/etc, which can overwrite newer files already on this machine. Continue?"
 }

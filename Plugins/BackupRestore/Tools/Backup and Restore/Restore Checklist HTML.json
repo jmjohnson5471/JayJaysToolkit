@@ -1,9 +1,9 @@
 {
-  "Name": "Restore Checklist HTML",
+  "Name": "Restore Checklist HTML Export",
   "Category": "Backup and Restore",
-  "Description": "Creates a printable restore checklist.",
+  "Description": "Creates a printable HTML checklist for what still needs done after a new computer restore.",
   "RunAsAdmin": false,
   "Hidden": false,
   "Arguments": "",
-  "ExecutionMode": "Console"
+  "ExecutionMode": "Interactive"
 }
