@@ -1,0 +1,9 @@
+{
+  "Name": "Plugin Manager",
+  "Category": "Plugin Manager",
+  "Description": "Lists installed plugins, versions, tool counts, and can export a plugin report.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}
