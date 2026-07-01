@@ -1,0 +1,9 @@
+{
+  "Name": "Open Portable Apps Manager",
+  "Category": "Manager",
+  "Description": "Opens JayJaysToolkit's managed PortableApps folder and lists app folders.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}

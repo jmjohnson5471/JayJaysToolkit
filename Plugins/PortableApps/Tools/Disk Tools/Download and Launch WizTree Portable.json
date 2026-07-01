@@ -1,0 +1,9 @@
+{
+  "Name": "Download and Launch WizTree Portable",
+  "Category": "Disk Tools",
+  "Description": "Downloads WizTree into JayJaysToolkit\\PortableApps\\WizTree and launches it.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}
