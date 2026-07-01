@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JayJaysToolkit Local Unattend Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{--bg:#101214;--panel:#1b1f24;--panel2:#242a31;--text:#e8edf2;--muted:#9ba7b4;--green:#00dc78;--warn:#ffbd5a;--red:#ff5f56}
+*{box-sizing:border-box}
+body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{padding:22px 28px;border-bottom:1px solid #2b3138;background:#0c0f11}
+h1{margin:0;color:var(--green);font-size:26px}
+small{color:var(--muted)}
+main{display:grid;grid-template-columns:420px 1fr;gap:18px;padding:18px}
+section{background:var(--panel);border:1px solid #2c333b;border-radius:12px;padding:16px}
+h2{font-size:17px;margin:0 0 12px;color:var(--green)}
+label{display:block;margin:12px 0 5px;color:#d8dee5}
+input,select,textarea{width:100%;padding:9px 10px;border:1px solid #3b4550;border-radius:8px;background:#0f1215;color:var(--text)}
+input[type=checkbox]{width:auto}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.check{display:flex;gap:10px;align-items:center;margin:10px 0;color:#d8dee5}
+.buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+button{border:0;border-radius:9px;padding:10px 14px;background:var(--green);color:#07110b;font-weight:700;cursor:pointer}
+button.secondary{background:#3a4652;color:var(--text)}
+button.warn{background:var(--warn);color:#1b1200}
+pre{white-space:pre;overflow:auto;background:#07090b;border:1px solid #2a3036;border-radius:12px;padding:14px;min-height:620px;color:#c7f7dd}
+.note{border-left:4px solid var(--warn);padding:10px;background:#251d10;color:#ffd999;border-radius:8px;margin:12px 0}
+.footer{padding:12px 28px;color:var(--muted);font-size:12px}
+@media(max-width:1000px){main{grid-template-columns:1fr}pre{min-height:400px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>JayJaysToolkit Local Unattend Generator</h1>
+  <small>Offline autounattend.xml starter generator for Windows 10/11 installs</small>
+</header>
+
+<main>
+<section>
+  <h2>Windows / Setup</h2>
+  <div class="row">
+    <div>
+      <label>Windows Edition</label>
+      <select id="edition">
+        <option value="">Do not specify</option>
+        <option value="Windows 11 Pro">Windows 11 Pro</option>
+        <option value="Windows 11 Home">Windows 11 Home</option>
+        <option value="Windows 10 Pro">Windows 10 Pro</option>
+        <option value="Windows 10 Home">Windows 10 Home</option>
+      </select>
+    </div>
+    <div>
+      <label>Architecture</label>
+      <select id="arch">
+        <option value="amd64">64-bit / amd64</option>
+        <option value="x86">32-bit / x86</option>
+      </select>
+    </div>
+  </div>
+
+  <label>Product Key / Generic Install Key</label>
+  <input id="productKey" placeholder="Optional. Leave blank to skip.">
+
+  <div class="row">
+    <div>
+      <label>Locale</label>
+      <input id="locale" value="en-US">
+    </div>
+    <div>
+      <label>Keyboard</label>
+      <input id="keyboard" value="0409:00000409">
+    </div>
+  </div>
+
+  <label>Time Zone</label>
+  <input id="timezone" value="Eastern Standard Time">
+
+  <label>Computer Name</label>
+  <input id="computerName" placeholder="Optional, e.g. PC-%RAND% or JAYJAY-PC">
+
+  <div class="note">
+    Disk wipe is intentionally disabled in this starter generator. Add disk partitioning only after testing in a VM.
+  </div>
+
+  <h2>OOBE / Privacy</h2>
+  <label class="check"><input type="checkbox" id="bypassNetwork" checked> Bypass Windows 11 network requirement</label>
+  <label class="check"><input type="checkbox" id="hideOnline" checked> Hide online account screens where possible</label>
+  <label class="check"><input type="checkbox" id="hideEula" checked> Hide EULA page</label>
+  <label class="check"><input type="checkbox" id="skipMachineOobe" checked> Skip machine OOBE</label>
+  <label class="check"><input type="checkbox" id="skipUserOobe"> Skip user OOBE</label>
+
+  <h2>Local Account</h2>
+  <label class="check"><input type="checkbox" id="createUser" checked> Create local admin account</label>
+  <label>Username</label>
+  <input id="username" value="Admin">
+  <label>Password</label>
+  <input id="password" type="password" placeholder="Optional. Blank means no password in XML.">
+  <label class="check"><input type="checkbox" id="autoLogon"> Auto-logon local account once</label>
+
+  <h2>First Logon Commands</h2>
+  <label class="check"><input type="checkbox" id="disableConsumer" checked> Disable consumer features / suggested apps</label>
+  <label class="check"><input type="checkbox" id="enableRdp"> Enable Remote Desktop</label>
+  <label class="check"><input type="checkbox" id="runCtt"> Add Chris Titus Tech launcher shortcut command note</label>
+  <label>Custom FirstLogon PowerShell Command</label>
+  <textarea id="customCommand" rows="3" placeholder="Optional. Example: Set-ExecutionPolicy RemoteSigned -Force"></textarea>
+
+  <div class="buttons">
+    <button onclick="generate()">Generate XML</button>
+    <button onclick="downloadXml()">Download autounattend.xml</button>
+    <button class="secondary" onclick="copyXml()">Copy XML</button>
+    <button class="warn" onclick="resetForm()">Reset</button>
+  </div>
+</section>
+
+<section>
+  <h2>Generated autounattend.xml</h2>
+  <pre id="output"></pre>
+</section>
+</main>
+
+<div class="footer">
+Inspired by the public Schneegans Unattend Generator workflow. This is a simplified local JayJaysToolkit starter, not a full clone.
+</div>
+
+<script>
+function x(s){
+  return String(s ?? "")
+    .replaceAll("&","&amp;").replaceAll("<","&lt;")
+    .replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&apos;");
+}
+function val(id){ return document.getElementById(id).value.trim(); }
+function checked(id){ return document.getElementById(id).checked; }
+
+function syncCommands(){
+  const commands = [];
+  let order = 1;
+  if(checked("bypassNetwork")){
+    commands.push({order:order++, desc:"Bypass network requirement", cmd:'reg add HKLM\\\\SYSTEM\\\\Setup\\\\LabConfig /v BypassNRO /t REG_DWORD /d 1 /f'});
+  }
+  if(checked("disableConsumer")){
+    commands.push({order:order++, desc:"Disable consumer features", cmd:'reg add HKLM\\\\SOFTWARE\\\\Policies\\\\Microsoft\\\\Windows\\\\CloudContent /v DisableWindowsConsumerFeatures /t REG_DWORD /d 1 /f'});
+  }
+  if(checked("enableRdp")){
+    commands.push({order:order++, desc:"Enable Remote Desktop", cmd:'powershell -NoProfile -ExecutionPolicy Bypass -Command "Set-ItemProperty \\'HKLM:\\\\System\\\\CurrentControlSet\\\\Control\\\\Terminal Server\\' -Name fDenyTSConnections -Value 0; Enable-NetFirewallRule -DisplayGroup \\'Remote Desktop\\'"'});
+  }
+  if(checked("runCtt")){
+    commands.push({order:order++, desc:"Chris Titus utility note", cmd:'powershell -NoProfile -ExecutionPolicy Bypass -Command "Write-Host \\'Run manually if desired: irm https://christitus.com/win | iex\\'"'});
+  }
+  const custom = val("customCommand");
+  if(custom){
+    commands.push({order:order++, desc:"Custom command", cmd:'powershell -NoProfile -ExecutionPolicy Bypass -Command "' + custom.replaceAll('"','\\"') + '"'});
+  }
+  return commands;
+}
+
+function localAccountXml(){
+  if(!checked("createUser")) return "";
+  const user = x(val("username") || "Admin");
+  const pass = val("password");
+  let passXml = "";
+  if(pass){
+    passXml = `
+          <Password>
+            <Value>${x(pass)}</Value>
+            <PlainText>true</PlainText>
+          </Password>`;
+  }
+  return `
+      <UserAccounts>
+        <LocalAccounts>
+          <LocalAccount wcm:action="add">
+            <Name>${user}</Name>
+            <Group>Administrators</Group>
+            <DisplayName>${user}</DisplayName>${passXml}
+          </LocalAccount>
+        </LocalAccounts>
+      </UserAccounts>`;
+}
+
+function autoLogonXml(){
+  if(!checked("autoLogon") || !checked("createUser")) return "";
+  const user = x(val("username") || "Admin");
+  const pass = val("password");
+  if(!pass) return "";
+  return `
+      <AutoLogon>
+        <Username>${user}</Username>
+        <Enabled>true</Enabled>
+        <LogonCount>1</LogonCount>
+        <Password>
+          <Value>${x(pass)}</Value>
+          <PlainText>true</PlainText>
+        </Password>
+      </AutoLogon>`;
+}
+
+function firstLogonXml(){
+  const commands = syncCommands();
+  if(commands.length === 0) return "";
+  let xml = `
+      <FirstLogonCommands>`;
+  for(const c of commands){
+    xml += `
+        <SynchronousCommand wcm:action="add">
+          <Order>${c.order}</Order>
+          <Description>${x(c.desc)}</Description>
+          <CommandLine>${x(c.cmd)}</CommandLine>
+        </SynchronousCommand>`;
+  }
+  xml += `
+      </FirstLogonCommands>`;
+  return xml;
+}
+
+function imageInstallXml(){
+  const edition = val("edition");
+  if(!edition) return "";
+  return `
+      <ImageInstall>
+        <OSImage>
+          <InstallFrom>
+            <MetaData wcm:action="add">
+              <Key>/IMAGE/NAME</Key>
+              <Value>${x(edition)}</Value>
+            </MetaData>
+          </InstallFrom>
+          <InstallToAvailablePartition>true</InstallToAvailablePartition>
+        </OSImage>
+      </ImageInstall>`;
+}
+
+function productKeyXml(){
+  const key = val("productKey");
+  if(!key) return "";
+  return `
+        <ProductKey>
+          <Key>${x(key)}</Key>
+          <WillShowUI>OnError</WillShowUI>
+        </ProductKey>`;
+}
+
+function computerNameXml(){
+  const name = val("computerName");
+  if(!name) return "";
+  return `
+      <ComputerName>${x(name)}</ComputerName>`;
+}
+
+function oobeXml(){
+  return `
+      <OOBE>
+        <HideEULAPage>${checked("hideEula") ? "true" : "false"}</HideEULAPage>
+        <HideOnlineAccountScreens>${checked("hideOnline") ? "true" : "false"}</HideOnlineAccountScreens>
+        <HideWirelessSetupInOOBE>${checked("bypassNetwork") ? "true" : "false"}</HideWirelessSetupInOOBE>
+        <NetworkLocation>Work</NetworkLocation>
+        <ProtectYourPC>3</ProtectYourPC>
+        <SkipMachineOOBE>${checked("skipMachineOobe") ? "true" : "false"}</SkipMachineOOBE>
+        <SkipUserOOBE>${checked("skipUserOobe") ? "true" : "false"}</SkipUserOOBE>
+      </OOBE>`;
+}
+
+function generate(){
+  const arch = val("arch") || "amd64";
+  const locale = x(val("locale") || "en-US");
+  const keyboard = x(val("keyboard") || "0409:00000409");
+  const timezone = x(val("timezone") || "Eastern Standard Time");
+
+  const xml = `<?xml version="1.0" encoding="utf-8"?>
+<unattend xmlns="urn:schemas-microsoft-com:unattend">
+  <settings pass="windowsPE">
+    <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="${arch}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <SetupUILanguage>
+        <UILanguage>${locale}</UILanguage>
+      </SetupUILanguage>
+      <InputLocale>${keyboard}</InputLocale>
+      <SystemLocale>${locale}</SystemLocale>
+      <UILanguage>${locale}</UILanguage>
+      <UserLocale>${locale}</UserLocale>
+    </component>
+    <component name="Microsoft-Windows-Setup" processorArchitecture="${arch}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">${productKeyXml()}${imageInstallXml()}
+      <UserData>
+        <AcceptEula>true</AcceptEula>
+      </UserData>
+    </component>
+  </settings>
+
+  <settings pass="specialize">
+    <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="${arch}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">${computerNameXml()}
+      <TimeZone>${timezone}</TimeZone>
+    </component>
+  </settings>
+
+  <settings pass="oobeSystem">
+    <component name="Microsoft-Windows-International-Core" processorArchitecture="${arch}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <InputLocale>${keyboard}</InputLocale>
+      <SystemLocale>${locale}</SystemLocale>
+      <UILanguage>${locale}</UILanguage>
+      <UserLocale>${locale}</UserLocale>
+    </component>
+    <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="${arch}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">${oobeXml()}${localAccountXml()}${autoLogonXml()}${firstLogonXml()}
+    </component>
+  </settings>
+</unattend>`;
+  document.getElementById("output").textContent = xml;
+  return xml;
+}
+
+function downloadXml(){
+  const xml = generate();
+  const blob = new Blob([xml], {type:"application/xml"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "autounattend.xml";
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+}
+async function copyXml(){
+  const xml = generate();
+  await navigator.clipboard.writeText(xml);
+  alert("XML copied to clipboard.");
+}
+function resetForm(){ location.reload(); }
+generate();
+</script>
+</body>
+</html>
