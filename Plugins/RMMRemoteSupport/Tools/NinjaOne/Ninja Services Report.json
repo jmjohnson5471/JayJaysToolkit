@@ -1,0 +1,9 @@
+{
+  "Name": "Ninja Services Report",
+  "Category": "NinjaOne",
+  "Description": "Shows NinjaOne services.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

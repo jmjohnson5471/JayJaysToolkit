@@ -1,0 +1,8 @@
+{
+  "Id": "PortableApps",
+  "Name": "Portable Apps",
+  "Version": "1.0.0",
+  "Description": "Download or launch common portable technician applications.",
+  "Author": "JayJaysToolkit",
+  "Enabled": true
+}

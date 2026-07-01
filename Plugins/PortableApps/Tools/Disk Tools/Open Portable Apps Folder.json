@@ -1,0 +1,9 @@
+{
+  "Name": "Open Portable Apps Folder",
+  "Category": "Disk Tools",
+  "Description": "Opens the portable apps plugin folder.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "External"
+}

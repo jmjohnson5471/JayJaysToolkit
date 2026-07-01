@@ -1,0 +1,9 @@
+{
+  "Name": "DNS Test",
+  "Category": "Diagnostics",
+  "Description": "Tests DNS resolution.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

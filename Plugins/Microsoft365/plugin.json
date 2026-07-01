@@ -1,0 +1,8 @@
+{
+  "Id": "Microsoft365",
+  "Name": "Microsoft 365",
+  "Version": "1.0.0",
+  "Description": "Office, Teams, OneDrive, Outlook, and Microsoft 365 helper tools.",
+  "Author": "JayJaysToolkit",
+  "Enabled": true
+}

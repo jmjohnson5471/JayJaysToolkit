@@ -1,0 +1,9 @@
+{
+  "Name": "Show Tactical Services",
+  "Category": "Tactical RMM",
+  "Description": "Shows Tactical/Mesh related services.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

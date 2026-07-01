@@ -1,0 +1,9 @@
+{
+  "Name": "Open Warranty Lookup Links",
+  "Category": "Warranty",
+  "Description": "Opens Lenovo, HP, and Dell warranty pages.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "External"
+}

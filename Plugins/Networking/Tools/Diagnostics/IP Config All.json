@@ -1,0 +1,9 @@
+{
+  "Name": "IP Config All",
+  "Category": "Diagnostics",
+  "Description": "Shows full IP config.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

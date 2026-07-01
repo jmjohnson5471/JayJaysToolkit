@@ -1,0 +1,9 @@
+{
+  "Name": "Portable Apps Wishlist",
+  "Category": "Notes",
+  "Description": "Displays recommended portable apps to add.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

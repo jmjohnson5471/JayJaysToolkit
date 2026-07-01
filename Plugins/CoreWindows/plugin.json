@@ -1,0 +1,8 @@
+{
+  "Id": "CoreWindows",
+  "Name": "Core Windows",
+  "Version": "1.0.0",
+  "Description": "Core Windows repair, management, and technician shortcuts.",
+  "Author": "JayJaysToolkit",
+  "Enabled": true
+}

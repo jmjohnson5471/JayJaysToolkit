@@ -1,0 +1,9 @@
+{
+  "Name": "Download WizTree Portable",
+  "Category": "Disk Tools",
+  "Description": "Downloads WizTree portable ZIP to Desktop.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}
