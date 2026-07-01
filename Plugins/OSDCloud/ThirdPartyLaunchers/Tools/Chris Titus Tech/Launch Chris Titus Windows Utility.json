@@ -1,9 +1,0 @@
-{
-  "Name": "Launch Chris Titus Windows Utility",
-  "Category": "Chris Titus Tech",
-  "Description": "Runs the Chris Titus Tech Windows Utility launcher after confirmation.",
-  "RunAsAdmin": true,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Interactive"
-}

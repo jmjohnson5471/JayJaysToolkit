@@ -1,1 +1,0 @@
-taskkill /f /im ms-teams.exe 2>$null;taskkill /f /im Teams.exe 2>$null;Remove-Item "$env:APPDATA\Microsoft\Teams\*" -Recurse -Force -ErrorAction SilentlyContinue;Remove-Item "$env:LOCALAPPDATA\Packages\MSTeams_8wekyb3d8bbwe\LocalCache\*" -Recurse -Force -ErrorAction SilentlyContinue;Write-Host "Teams cache cleanup attempted."

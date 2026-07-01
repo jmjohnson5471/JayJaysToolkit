@@ -1,9 +1,0 @@
-{
-  "Name": "Restart Explorer",
-  "Category": "Windows Repair",
-  "Description": "Restarts Windows Explorer shell.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Console"
-}

@@ -1,9 +1,0 @@
-{
-  "Name": "Office Quick Repair",
-  "Category": "Office",
-  "Description": "Launches Office quick repair.",
-  "RunAsAdmin": true,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "External"
-}

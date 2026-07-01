@@ -1,9 +1,0 @@
-{
-  "Name": "DISM Help",
-  "Category": "Imaging",
-  "Description": "Shows DISM help.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Console"
-}

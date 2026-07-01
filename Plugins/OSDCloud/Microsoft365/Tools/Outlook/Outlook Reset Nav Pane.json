@@ -1,9 +1,0 @@
-{
-  "Name": "Outlook Reset Navigation Pane",
-  "Category": "Outlook",
-  "Description": "Resets Outlook navigation pane.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "External"
-}

@@ -1,9 +1,0 @@
-{
-  "Name": "Open TCP Connections",
-  "Category": "Diagnostics",
-  "Description": "Shows TCP connections.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Console"
-}

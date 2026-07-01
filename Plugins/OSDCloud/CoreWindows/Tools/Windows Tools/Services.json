@@ -1,9 +1,0 @@
-{
-  "Name": "Services",
-  "Category": "Windows Tools",
-  "Description": "Opens Services console.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "External"
-}

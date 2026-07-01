@@ -1,9 +1,0 @@
-{
-  "Name": "OneDrive Reset",
-  "Category": "OneDrive",
-  "Description": "Runs OneDrive reset.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Console"
-}

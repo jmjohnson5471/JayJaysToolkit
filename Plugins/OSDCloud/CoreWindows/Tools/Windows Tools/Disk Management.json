@@ -1,9 +1,0 @@
-{
-  "Name": "Disk Management",
-  "Category": "Windows Tools",
-  "Description": "Opens Disk Management.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "External"
-}

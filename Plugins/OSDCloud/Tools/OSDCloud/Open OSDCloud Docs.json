@@ -1,9 +1,0 @@
-{
-  "Name": "Open OSDCloud Docs",
-  "Category": "OSDCloud",
-  "Description": "Opens OSDCloud documentation.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "External"
-}

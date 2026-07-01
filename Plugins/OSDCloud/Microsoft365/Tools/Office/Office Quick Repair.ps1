@@ -1,1 +1,0 @@
-$c="$env:CommonProgramFiles\Microsoft Shared\ClickToRun\OfficeClickToRun.exe";if(Test-Path $c){Start-Process $c "scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=QuickRepair DisplayLevel=True"}

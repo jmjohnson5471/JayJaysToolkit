@@ -1,9 +1,0 @@
-{
-  "Name": "Ping Monitor",
-  "Category": "Diagnostics",
-  "Description": "Continuous ping monitor.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Interactive"
-}

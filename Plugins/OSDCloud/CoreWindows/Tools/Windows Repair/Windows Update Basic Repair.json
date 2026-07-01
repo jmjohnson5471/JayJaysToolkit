@@ -1,9 +1,0 @@
-{
-  "Name": "Windows Update Basic Repair",
-  "Category": "Windows Repair",
-  "Description": "Clears Windows Update download cache and restarts services.",
-  "RunAsAdmin": true,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Console"
-}

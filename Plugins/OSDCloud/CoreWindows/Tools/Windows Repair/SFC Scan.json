@@ -1,9 +1,0 @@
-{
-  "Name": "SFC Scan",
-  "Category": "Windows Repair",
-  "Description": "Runs System File Checker.",
-  "RunAsAdmin": true,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Console"
-}

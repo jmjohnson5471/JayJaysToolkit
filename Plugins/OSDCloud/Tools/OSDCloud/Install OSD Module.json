@@ -1,9 +1,0 @@
-{
-  "Name": "Install OSD Module",
-  "Category": "OSDCloud",
-  "Description": "Installs/imports OSD PowerShell module.",
-  "RunAsAdmin": true,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Interactive"
-}

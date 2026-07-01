@@ -1,8 +1,0 @@
-{
-  "Id": "BackupRestore",
-  "Name": "Backup and Restore",
-  "Version": "1.0.0",
-  "Description": "User migration backup, restore, and checklist tools.",
-  "Author": "JayJaysToolkit",
-  "Enabled": true
-}

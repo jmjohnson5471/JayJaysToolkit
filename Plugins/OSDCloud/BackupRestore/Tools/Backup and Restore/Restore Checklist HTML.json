@@ -1,9 +1,0 @@
-{
-  "Name": "Restore Checklist HTML",
-  "Category": "Backup and Restore",
-  "Description": "Creates a printable restore checklist.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Console"
-}

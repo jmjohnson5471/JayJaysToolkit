@@ -1,9 +1,0 @@
-{
-  "Name": "Restart RustDesk Service",
-  "Category": "RustDesk",
-  "Description": "Restarts RustDesk service.",
-  "RunAsAdmin": true,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Console"
-}

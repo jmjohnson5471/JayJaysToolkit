@@ -1,8 +1,0 @@
-{
-  "Id": "Networking",
-  "Name": "Networking",
-  "Version": "1.0.0",
-  "Description": "Network diagnostics, reports, and repair tools.",
-  "Author": "JayJaysToolkit",
-  "Enabled": true
-}

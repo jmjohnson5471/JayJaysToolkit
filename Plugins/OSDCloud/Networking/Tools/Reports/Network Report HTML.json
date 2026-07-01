@@ -1,9 +1,0 @@
-{
-  "Name": "Network Report HTML",
-  "Category": "Reports",
-  "Description": "Creates network HTML report.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Console"
-}

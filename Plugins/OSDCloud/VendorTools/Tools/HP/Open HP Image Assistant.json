@@ -1,9 +1,0 @@
-{
-  "Name": "HP Image Assistant",
-  "Category": "HP",
-  "Description": "Opens HP Image Assistant page.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "External"
-}

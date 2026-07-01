@@ -1,9 +1,0 @@
-{
-  "Name": "Restore Migration Backup",
-  "Category": "Backup and Restore",
-  "Description": "Restores user folders, browser data, Wi-Fi profiles, and opens backed-up drivers.",
-  "RunAsAdmin": true,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Interactive"
-}

@@ -1,9 +1,0 @@
-{
-  "Name": "Event Viewer",
-  "Category": "Windows Tools",
-  "Description": "Opens Event Viewer.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "External"
-}

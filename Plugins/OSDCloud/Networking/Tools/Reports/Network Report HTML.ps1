@@ -1,1 +1,0 @@
-$out="$env:USERPROFILE\Desktop\NetworkReport_$env:COMPUTERNAME.html";$html="<html><body><h1>Network Report</h1>$((Get-NetIPConfiguration|ConvertTo-Html -Fragment))$((Get-NetAdapter|ConvertTo-Html -Fragment))</body></html>";$html|Set-Content $out;Start-Process $out;Write-Host "Saved to $out"

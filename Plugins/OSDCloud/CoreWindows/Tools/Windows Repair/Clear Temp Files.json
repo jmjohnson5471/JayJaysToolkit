@@ -1,9 +1,0 @@
-{
-  "Name": "Clear Temp Files",
-  "Category": "Windows Repair",
-  "Description": "Clears common temp folders.",
-  "RunAsAdmin": true,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Console"
-}

@@ -1,9 +1,0 @@
-{
-  "Name": "Device Manager",
-  "Category": "Windows Tools",
-  "Description": "Opens Device Manager.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "External"
-}

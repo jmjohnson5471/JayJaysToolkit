@@ -1,9 +1,0 @@
-{
-  "Name": "Flush DNS",
-  "Category": "Repair",
-  "Description": "Flushes DNS cache.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Console"
-}

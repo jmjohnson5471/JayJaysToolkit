@@ -1,9 +1,0 @@
-{
-  "Name": "Get RustDesk ID",
-  "Category": "RustDesk",
-  "Description": "Gets RustDesk ID.",
-  "RunAsAdmin": true,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Console"
-}
