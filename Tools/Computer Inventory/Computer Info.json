@@ -1,0 +1,9 @@
+{
+  "Name": "Computer Info",
+  "Category": "Computer Inventory",
+  "Description": "Shows detailed computer info.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

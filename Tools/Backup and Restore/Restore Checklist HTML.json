@@ -1,0 +1,9 @@
+{
+  "Name": "Restore Checklist HTML",
+  "Category": "Backup and Restore",
+  "Description": "Creates a basic HTML restore checklist.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

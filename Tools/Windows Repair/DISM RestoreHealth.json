@@ -1,0 +1,9 @@
+{
+  "Name": "DISM RestoreHealth",
+  "Category": "Windows Repair",
+  "Description": "Runs DISM RestoreHealth.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

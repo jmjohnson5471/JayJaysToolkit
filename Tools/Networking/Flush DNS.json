@@ -1,0 +1,9 @@
+{
+  "Name": "Flush DNS",
+  "Category": "Networking",
+  "Description": "Clears DNS resolver cache.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

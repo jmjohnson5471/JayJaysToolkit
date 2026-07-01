@@ -1,0 +1,9 @@
+{
+  "Name": "IP Config All",
+  "Category": "Networking",
+  "Description": "Shows full IP configuration.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}
