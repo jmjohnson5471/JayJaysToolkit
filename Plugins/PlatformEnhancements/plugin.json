@@ -1,8 +1,0 @@
-{
-  "Id": "PlatformEnhancements",
-  "Name": "Platform Enhancements",
-  "Version": "1.0.1",
-  "Description": "Adds dashboard, plugin manager, settings, marketplace foundation, tool history, and diagnostics to JayJaysToolkit. Fixed path detection.",
-  "Author": "JayJaysToolkit",
-  "Enabled": true
-}

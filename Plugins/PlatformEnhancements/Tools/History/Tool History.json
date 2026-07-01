@@ -1,9 +1,0 @@
-{
-  "Name": "Tool History",
-  "Category": "History",
-  "Description": "Shows recent tools launched from JayJaysToolkit logs.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Interactive"
-}

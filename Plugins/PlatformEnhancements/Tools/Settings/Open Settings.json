@@ -1,9 +1,0 @@
-{
-  "Name": "Open Settings",
-  "Category": "Settings",
-  "Description": "Creates and opens a JSON settings file for future configurable toolkit options.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Interactive"
-}

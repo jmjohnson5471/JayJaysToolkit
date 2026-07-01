@@ -1,9 +1,0 @@
-{
-  "Name": "Technician Dashboard",
-  "Category": "Dashboard",
-  "Description": "Fast health dashboard showing OS, activation, BitLocker, Defender, Secure Boot, TPM, disk, uptime, and network status.",
-  "RunAsAdmin": true,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Interactive"
-}

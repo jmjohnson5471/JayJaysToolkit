@@ -1,9 +1,0 @@
-{
-  "Name": "Toolkit Diagnostics Report",
-  "Category": "Diagnostics",
-  "Description": "Creates an HTML report of discovered plugins, tools, metadata, and common plugin issues.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Interactive"
-}
