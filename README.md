@@ -40,29 +40,22 @@ Plugins/
   ThirdPartyLaunchers/
 ```
 
-Each plugin has its own `plugin.json`, tools, and metadata.
+Each plugin has its own `plugin.json`, tools, and metadata. See `docs/Plugins.md`
+for the full tool metadata schema (including the `Confirm` safety flag) and how to
+add your own plugin.
 
-## Tool metadata
+## What's new in 2.1
 
-Each tool can have a matching `.json` file:
-
-```json
-{
-  "Name": "BitLocker Status",
-  "Category": "BitLocker",
-  "Description": "Shows BitLocker status.",
-  "RunAsAdmin": true,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Console"
-}
-```
-
-Execution modes:
-
-- `Console` — output appears in the live console
-- `Interactive` — opens its own PowerShell/CMD window for prompts
-- `External` — launches GUI apps, EXEs, URLs, MSI installers, etc.
+- **No more freezing.** Tools run asynchronously with live streaming output and a
+  Cancel button — the window stays responsive even during a multi-minute SFC/DISM run.
+- **Confirmation prompts** before anything destructive or disruptive runs (network
+  resets, forced app closures, data overwrites, service restarts on your own remote
+  support tool, etc).
+- **Safer updates.** Update checks the remote version first, asks for confirmation,
+  verifies the download, and preserves any custom plugins you've added locally.
+- **Admin badges** in the tool list so you know at a glance what will trigger a UAC
+  prompt.
+- See `CHANGELOG.md` for the full list.
 
 ## Included plugin groups
 
