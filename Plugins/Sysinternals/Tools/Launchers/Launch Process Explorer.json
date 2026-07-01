@@ -1,0 +1,9 @@
+{
+  "Name": "Launch Process Explorer",
+  "Category": "Launchers",
+  "Description": "Launches Sysinternals Process Explorer if downloaded.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}

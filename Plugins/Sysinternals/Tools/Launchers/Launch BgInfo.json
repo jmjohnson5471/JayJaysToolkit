@@ -1,0 +1,9 @@
+{
+  "Name": "Launch BgInfo",
+  "Category": "Launchers",
+  "Description": "Launches Sysinternals BgInfo if downloaded.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}

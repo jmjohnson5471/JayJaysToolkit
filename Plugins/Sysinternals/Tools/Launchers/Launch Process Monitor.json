@@ -1,0 +1,9 @@
+{
+  "Name": "Launch Process Monitor",
+  "Category": "Launchers",
+  "Description": "Launches Sysinternals Process Monitor if downloaded.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}

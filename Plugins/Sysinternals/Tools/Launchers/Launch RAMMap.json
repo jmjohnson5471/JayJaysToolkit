@@ -1,0 +1,9 @@
+{
+  "Name": "Launch RAMMap",
+  "Category": "Launchers",
+  "Description": "Launches Sysinternals RAMMap if downloaded.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}
