@@ -1,8 +1,0 @@
-{
-  "Id": "DeploymentDesigner",
-  "Name": "Deployment Designer",
-  "Version": "3.0.0",
-  "Description": "PowerShell WinForms GUI deployment designer that reliably exports autounattend.xml locally.",
-  "Author": "JayJaysToolkit",
-  "Enabled": true
-}
