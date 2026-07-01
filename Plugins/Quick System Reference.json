@@ -1,0 +1,143 @@
+function Get-WindowsDisplayVersion {
+    try {
+        $cv = Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion"
+        if ($cv.DisplayVersion) { return $cv.DisplayVersion }
+        if ($cv.ReleaseId) { return $cv.ReleaseId }
+        return "Unknown"
+    } catch { return "Unknown" }
+}
+
+function Get-FullProductKey {
+    try {
+        $key = (Get-CimInstance -ClassName SoftwareLicensingService).OA3xOriginalProductKey
+        if ([string]::IsNullOrWhiteSpace($key)) { return "Not detected" }
+        return $key
+    } catch { return "Not detected" }
+}
+
+function Get-ActivationStatus {
+    try {
+        $lic = Get-CimInstance SoftwareLicensingProduct |
+            Where-Object { $_.PartialProductKey -and $_.LicenseStatus -eq 1 } |
+            Select-Object -First 1
+        if ($lic) { return "Activated" }
+        return "Not activated / unknown"
+    } catch { return "Unknown" }
+}
+
+function Get-SecureBootStatus {
+    try { return (Confirm-SecureBootUEFI).ToString() }
+    catch { return "Unavailable / Legacy BIOS / Permission issue" }
+}
+
+$ErrorActionPreference = "Continue"
+Add-Type -AssemblyName System.Web
+
+function HtmlEncode($text) {
+    return [System.Web.HttpUtility]::HtmlEncode([string]$text)
+}
+
+$desktop = [Environment]::GetFolderPath("Desktop")
+if (!(Test-Path $desktop)) { $desktop = $env:TEMP }
+
+$out = Join-Path $desktop ("SystemInfoPlus_{0}_{1}.html" -f $env:COMPUTERNAME,(Get-Date -Format "yyyyMMdd_HHmmss"))
+
+$os = Get-CimInstance Win32_OperatingSystem
+$cs = Get-CimInstance Win32_ComputerSystem
+$bios = Get-CimInstance Win32_BIOS
+$cpu = Get-CimInstance Win32_Processor | Select-Object -First 1
+$gpu = Get-CimInstance Win32_VideoController | Select-Object Name,DriverVersion,@{n="AdapterRAMGB";e={[math]::Round($_.AdapterRAM/1GB,2)}}
+$disks = Get-CimInstance Win32_DiskDrive | Select-Object Model,SerialNumber,Status,@{n="SizeGB";e={[math]::Round($_.Size/1GB,1)}}
+$volumes = Get-CimInstance Win32_LogicalDisk | Select-Object DeviceID,VolumeName,FileSystem,@{n="SizeGB";e={[math]::Round($_.Size/1GB,1)}},@{n="FreeGB";e={[math]::Round($_.FreeSpace/1GB,1)}}
+$net = Get-NetIPConfiguration | Select-Object InterfaceAlias,IPv4Address,IPv4DefaultGateway,DNSServer
+$adapters = Get-NetAdapter | Select-Object Name,Status,LinkSpeed,MacAddress
+$printers = Get-Printer -ErrorAction SilentlyContinue | Select-Object Name,DriverName,PortName,Shared
+$tpm = Get-Tpm -ErrorAction SilentlyContinue
+$bitlocker = manage-bde -status 2>$null | Out-String
+$defender = Get-MpComputerStatus -ErrorAction SilentlyContinue
+$localAdmins = Get-LocalGroupMember Administrators -ErrorAction SilentlyContinue | Select-Object Name,ObjectClass,PrincipalSource
+$apps = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*,HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* -ErrorAction SilentlyContinue |
+    Where-Object DisplayName |
+    Select-Object DisplayName,DisplayVersion,Publisher,InstallDate |
+    Sort-Object DisplayName
+
+$uptime = (Get-Date) - $os.LastBootUpTime
+
+$summary = [PSCustomObject]@{
+    ComputerName = $env:COMPUTERNAME
+    LoggedInUser = "$env:USERDOMAIN\$env:USERNAME"
+    OS = $os.Caption
+    WindowsVersion = Get-WindowsDisplayVersion
+    Build = $os.BuildNumber
+    InstallDate = $os.InstallDate
+    LastBoot = $os.LastBootUpTime
+    Uptime = "{0} days, {1} hours" -f [int]$uptime.TotalDays,$uptime.Hours
+    ProductKey = Get-FullProductKey
+    Activation = Get-ActivationStatus
+    Manufacturer = $cs.Manufacturer
+    Model = $cs.Model
+    SerialNumber = $bios.SerialNumber
+    BIOSVersion = $bios.SMBIOSBIOSVersion
+    CPU = $cpu.Name
+    RAMGB = [math]::Round($cs.TotalPhysicalMemory/1GB,1)
+    Domain = $cs.Domain
+    DomainJoined = $cs.PartOfDomain
+    SecureBoot = Get-SecureBootStatus
+}
+
+$html = @"
+<html>
+<head>
+<title>System Info Plus - $env:COMPUTERNAME</title>
+<style>
+body{font-family:Segoe UI,Arial;margin:30px;background:#111;color:#eee}
+h1{color:#00dc78} h2{color:#00dc78;border-bottom:1px solid #333;padding-bottom:5px}
+table{border-collapse:collapse;width:100%;margin-bottom:25px;background:#1b1b1b}
+td,th{border:1px solid #333;padding:8px;vertical-align:top}
+th{background:#242424;color:#00dc78;text-align:left}
+.card{background:#1e1e1e;border:1px solid #333;border-radius:10px;padding:15px;margin-bottom:20px}
+pre{background:#050505;color:#00dc78;padding:12px;overflow:auto}
+@media print{body{background:white;color:black}table,.card{background:white;color:black}th{background:#eee;color:black}pre{background:#eee;color:black}}
+</style>
+</head>
+<body>
+<h1>JayJaysToolkit - System Info Plus</h1>
+<div class="card">
+<b>Generated:</b> $(Get-Date)<br>
+<b>Computer:</b> $env:COMPUTERNAME<br>
+<b>User:</b> $env:USERDOMAIN\$env:USERNAME<br>
+<b>Note:</b> Product key is shown unmasked in this report.
+</div>
+
+<h2>Summary</h2>
+$($summary | ConvertTo-Html -Fragment)
+<h2>Drives</h2>
+$($disks | ConvertTo-Html -Fragment)
+<h2>Volumes</h2>
+$($volumes | ConvertTo-Html -Fragment)
+<h2>Network Configuration</h2>
+$($net | ConvertTo-Html -Fragment)
+<h2>Network Adapters</h2>
+$($adapters | ConvertTo-Html -Fragment)
+<h2>GPU</h2>
+$($gpu | ConvertTo-Html -Fragment)
+<h2>TPM</h2>
+$($tpm | ConvertTo-Html -Fragment)
+<h2>Defender</h2>
+$($defender | Select-Object AMServiceEnabled,AntivirusEnabled,RealTimeProtectionEnabled,AntispywareEnabled,NISEnabled,QuickScanAge,FullScanAge,AntivirusSignatureLastUpdated | ConvertTo-Html -Fragment)
+<h2>BitLocker</h2>
+<pre>$(HtmlEncode $bitlocker)</pre>
+<h2>Local Administrators</h2>
+$($localAdmins | ConvertTo-Html -Fragment)
+<h2>Printers</h2>
+$($printers | ConvertTo-Html -Fragment)
+<h2>Installed Software</h2>
+$($apps | ConvertTo-Html -Fragment)
+</body>
+</html>
+"@
+
+$html | Set-Content $out -Encoding UTF8
+Write-Host "System Info Plus report saved to:"
+Write-Host $out -ForegroundColor Green
+Start-Process $out

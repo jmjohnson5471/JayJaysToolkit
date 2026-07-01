@@ -1,0 +1,8 @@
+{
+  "Id": "SystemInfoPlus",
+  "Name": "System Info Plus",
+  "Version": "1.1.0",
+  "Description": "Full and quick system info tools with Windows version, full product key, activation, and hardware details.",
+  "Author": "JayJaysToolkit",
+  "Enabled": true
+}
