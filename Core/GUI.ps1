@@ -2,7 +2,6 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
 $Script:BaseDir = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
-$Script:ToolsDir = Join-Path $Script:BaseDir "Tools"
 $Script:FavoritesFile = Join-Path $Script:BaseDir "favorites.json"
 
 . (Join-Path $Script:BaseDir "Core\Logger.ps1")
@@ -10,13 +9,10 @@ $Script:FavoritesFile = Join-Path $Script:BaseDir "favorites.json"
 . (Join-Path $Script:BaseDir "Core\Updater.ps1")
 
 function Load-Favorites {
-    if (Test-Path $Script:FavoritesFile) {
-        try { return @(Get-Content $Script:FavoritesFile -Raw | ConvertFrom-Json) } catch { return @() }
-    }
+    if (Test-Path $Script:FavoritesFile) { try { return @(Get-Content $Script:FavoritesFile -Raw | ConvertFrom-Json) } catch { return @() } }
     return @()
 }
 function Save-Favorites { param([array]$Favorites) $Favorites | ConvertTo-Json | Set-Content $Script:FavoritesFile }
-
 function Append-Output { param([string]$Text) $output.AppendText($Text + [Environment]::NewLine) }
 
 function Run-Tool {
@@ -24,6 +20,7 @@ function Run-Tool {
     Write-JJTLog "RUN: $($Tool.Name) [$($Tool.Path)]"
     Append-Output ""
     Append-Output "===== $($Tool.Name) ====="
+    Append-Output "Plugin: $($Tool.Plugin)"
     Append-Output "Started: $(Get-Date)"
     Append-Output "Path: $($Tool.Path)"
     Append-Output ""
@@ -32,21 +29,15 @@ function Run-Tool {
         if ($Tool.ExecutionMode -eq "Interactive") {
             if ($Tool.Extension -eq ".ps1") {
                 $args = "-NoProfile -ExecutionPolicy Bypass -NoExit -File `"$($Tool.Path)`" $($Tool.Arguments)"
-                if ($Tool.RunAsAdmin) {
-                    Start-Process powershell.exe -Verb RunAs -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args
-                } else {
-                    Start-Process powershell.exe -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args
-                }
+                if ($Tool.RunAsAdmin) { Start-Process powershell.exe -Verb RunAs -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args }
+                else { Start-Process powershell.exe -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args }
                 Append-Output "Launched interactive PowerShell window."
                 return
             }
             elseif ($Tool.Extension -in ".bat",".cmd") {
                 $args = "/k `"$($Tool.Path)`" $($Tool.Arguments)"
-                if ($Tool.RunAsAdmin) {
-                    Start-Process cmd.exe -Verb RunAs -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args
-                } else {
-                    Start-Process cmd.exe -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args
-                }
+                if ($Tool.RunAsAdmin) { Start-Process cmd.exe -Verb RunAs -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args }
+                else { Start-Process cmd.exe -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args }
                 Append-Output "Launched interactive CMD window."
                 return
             }
@@ -59,11 +50,6 @@ function Run-Tool {
                 $args = "-NoProfile -ExecutionPolicy Bypass -File `"$($Tool.Path)`" $($Tool.Arguments)"
                 if ($Tool.RunAsAdmin) { Start-Process powershell.exe -Verb RunAs -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args }
                 else { Start-Process powershell.exe -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args }
-            }
-            elseif ($Tool.Extension -in ".bat",".cmd") {
-                $args = "/c `"$($Tool.Path)`" $($Tool.Arguments)"
-                if ($Tool.RunAsAdmin) { Start-Process cmd.exe -Verb RunAs -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args }
-                else { Start-Process cmd.exe -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $args }
             }
             elseif ($Tool.RunAsAdmin) { Start-Process -FilePath $Tool.Path -Verb RunAs -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $Tool.Arguments }
             else { Start-Process -FilePath $Tool.Path -WorkingDirectory $Tool.WorkingDirectory -ArgumentList $Tool.Arguments }
@@ -105,8 +91,8 @@ function Run-Tool {
 }
 
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "JayJaysToolkit PowerShell Edition"
-$form.Size = New-Object System.Drawing.Size(1250,760)
+$form.Text = "JayJaysToolkit - Complete Field Technician Platform"
+$form.Size = New-Object System.Drawing.Size(1320,800)
 $form.StartPosition = "CenterScreen"
 $form.BackColor = [System.Drawing.Color]::FromArgb(25,25,25)
 $form.ForeColor = [System.Drawing.Color]::White
@@ -114,44 +100,60 @@ $form.Font = New-Object System.Drawing.Font("Segoe UI",10)
 
 $title = New-Object System.Windows.Forms.Label
 $title.Text = "JayJaysToolkit"
-$title.Font = New-Object System.Drawing.Font("Segoe UI",20,[System.Drawing.FontStyle]::Bold)
+$title.Font = New-Object System.Drawing.Font("Segoe UI",22,[System.Drawing.FontStyle]::Bold)
 $title.ForeColor = [System.Drawing.Color]::FromArgb(0,220,120)
 $title.AutoSize = $true
 $title.Location = New-Object System.Drawing.Point(20,15)
 $form.Controls.Add($title)
 
+$subtitle = New-Object System.Windows.Forms.Label
+$subtitle.Text = "Complete Field Technician Platform"
+$subtitle.ForeColor = [System.Drawing.Color]::LightGray
+$subtitle.AutoSize = $true
+$subtitle.Location = New-Object System.Drawing.Point(25,58)
+$form.Controls.Add($subtitle)
+
 $search = New-Object System.Windows.Forms.TextBox
-$search.Location = New-Object System.Drawing.Point(25,70)
+$search.Location = New-Object System.Drawing.Point(25,90)
 $search.Size = New-Object System.Drawing.Size(390,32)
 $search.BackColor = [System.Drawing.Color]::FromArgb(45,45,45)
 $search.ForeColor = [System.Drawing.Color]::White
 $form.Controls.Add($search)
 
 $category = New-Object System.Windows.Forms.ComboBox
-$category.Location = New-Object System.Drawing.Point(430,70)
+$category.Location = New-Object System.Drawing.Point(430,90)
 $category.Size = New-Object System.Drawing.Size(230,32)
 $category.DropDownStyle = "DropDownList"
 $category.BackColor = [System.Drawing.Color]::FromArgb(45,45,45)
 $category.ForeColor = [System.Drawing.Color]::White
 $form.Controls.Add($category)
 
+$pluginBox = New-Object System.Windows.Forms.ComboBox
+$pluginBox.Location = New-Object System.Drawing.Point(675,90)
+$pluginBox.Size = New-Object System.Drawing.Size(230,32)
+$pluginBox.DropDownStyle = "DropDownList"
+$pluginBox.BackColor = [System.Drawing.Color]::FromArgb(45,45,45)
+$pluginBox.ForeColor = [System.Drawing.Color]::White
+$form.Controls.Add($pluginBox)
+
 $toolList = New-Object System.Windows.Forms.ListView
-$toolList.Location = New-Object System.Drawing.Point(25,115)
-$toolList.Size = New-Object System.Drawing.Size(635,520)
+$toolList.Location = New-Object System.Drawing.Point(25,135)
+$toolList.Size = New-Object System.Drawing.Size(710,520)
 $toolList.View = "Details"
 $toolList.FullRowSelect = $true
 $toolList.GridLines = $true
 $toolList.BackColor = [System.Drawing.Color]::FromArgb(35,35,35)
 $toolList.ForeColor = [System.Drawing.Color]::White
 $toolList.Columns.Add("Tool",230) | Out-Null
-$toolList.Columns.Add("Category",150) | Out-Null
-$toolList.Columns.Add("Type",70) | Out-Null
-$toolList.Columns.Add("Description",300) | Out-Null
+$toolList.Columns.Add("Plugin",140) | Out-Null
+$toolList.Columns.Add("Category",120) | Out-Null
+$toolList.Columns.Add("Type",60) | Out-Null
+$toolList.Columns.Add("Description",330) | Out-Null
 $form.Controls.Add($toolList)
 
 $output = New-Object System.Windows.Forms.TextBox
-$output.Location = New-Object System.Drawing.Point(680,115)
-$output.Size = New-Object System.Drawing.Size(540,520)
+$output.Location = New-Object System.Drawing.Point(755,135)
+$output.Size = New-Object System.Drawing.Size(535,520)
 $output.Multiline = $true
 $output.ScrollBars = "Both"
 $output.ReadOnly = $true
@@ -163,74 +165,81 @@ $form.Controls.Add($output)
 
 $btnRun = New-Object System.Windows.Forms.Button
 $btnRun.Text = "Run"
-$btnRun.Location = New-Object System.Drawing.Point(25,650)
+$btnRun.Location = New-Object System.Drawing.Point(25,675)
 $btnRun.Size = New-Object System.Drawing.Size(90,38)
 $form.Controls.Add($btnRun)
 
 $btnFav = New-Object System.Windows.Forms.Button
 $btnFav.Text = "Favorite"
-$btnFav.Location = New-Object System.Drawing.Point(125,650)
+$btnFav.Location = New-Object System.Drawing.Point(125,675)
 $btnFav.Size = New-Object System.Drawing.Size(100,38)
 $form.Controls.Add($btnFav)
 
 $btnReload = New-Object System.Windows.Forms.Button
 $btnReload.Text = "Reload"
-$btnReload.Location = New-Object System.Drawing.Point(235,650)
+$btnReload.Location = New-Object System.Drawing.Point(235,675)
 $btnReload.Size = New-Object System.Drawing.Size(100,38)
 $form.Controls.Add($btnReload)
 
-$btnFolder = New-Object System.Windows.Forms.Button
-$btnFolder.Text = "Tools"
-$btnFolder.Location = New-Object System.Drawing.Point(345,650)
-$btnFolder.Size = New-Object System.Drawing.Size(90,38)
-$form.Controls.Add($btnFolder)
+$btnPlugins = New-Object System.Windows.Forms.Button
+$btnPlugins.Text = "Plugins"
+$btnPlugins.Location = New-Object System.Drawing.Point(345,675)
+$btnPlugins.Size = New-Object System.Drawing.Size(100,38)
+$form.Controls.Add($btnPlugins)
 
 $btnUpdate = New-Object System.Windows.Forms.Button
 $btnUpdate.Text = "Update"
-$btnUpdate.Location = New-Object System.Drawing.Point(445,650)
+$btnUpdate.Location = New-Object System.Drawing.Point(455,675)
 $btnUpdate.Size = New-Object System.Drawing.Size(90,38)
 $form.Controls.Add($btnUpdate)
 
 $btnClear = New-Object System.Windows.Forms.Button
 $btnClear.Text = "Clear Output"
-$btnClear.Location = New-Object System.Drawing.Point(680,650)
+$btnClear.Location = New-Object System.Drawing.Point(755,675)
 $btnClear.Size = New-Object System.Drawing.Size(120,38)
 $form.Controls.Add($btnClear)
 
 $btnCopy = New-Object System.Windows.Forms.Button
 $btnCopy.Text = "Copy Output"
-$btnCopy.Location = New-Object System.Drawing.Point(810,650)
+$btnCopy.Location = New-Object System.Drawing.Point(885,675)
 $btnCopy.Size = New-Object System.Drawing.Size(120,38)
 $form.Controls.Add($btnCopy)
 
 $Script:AllTools = @()
+$Script:AllPlugins = @()
 $Script:Favorites = Load-Favorites
 
-function Refresh-Categories {
+function Refresh-Filters {
     $category.Items.Clear()
-    $category.Items.Add("All") | Out-Null
+    $category.Items.Add("All Categories") | Out-Null
     $category.Items.Add("Favorites") | Out-Null
     $Script:AllTools | Select-Object -ExpandProperty Category -Unique | Sort-Object | ForEach-Object { $category.Items.Add($_) | Out-Null }
     $category.SelectedIndex = 0
+
+    $pluginBox.Items.Clear()
+    $pluginBox.Items.Add("All Plugins") | Out-Null
+    $Script:AllPlugins | Select-Object -ExpandProperty Name -Unique | Sort-Object | ForEach-Object { $pluginBox.Items.Add($_) | Out-Null }
+    $pluginBox.SelectedIndex = 0
 }
 
 function Refresh-ToolList {
     $toolList.Items.Clear()
     $q = $search.Text.ToLower()
     $cat = $category.SelectedItem
+    $plug = $pluginBox.SelectedItem
     $items = $Script:AllTools
 
-    if ($cat -and $cat -ne "All") {
+    if ($cat -and $cat -ne "All Categories") {
         if ($cat -eq "Favorites") { $items = $items | Where-Object { $Script:Favorites -contains $_.RelativePath } }
         else { $items = $items | Where-Object { $_.Category -eq $cat } }
     }
-    if ($q) {
-        $items = $items | Where-Object { $_.Name.ToLower().Contains($q) -or $_.Category.ToLower().Contains($q) -or $_.Description.ToLower().Contains($q) }
-    }
+    if ($plug -and $plug -ne "All Plugins") { $items = $items | Where-Object { $_.Plugin -eq $plug } }
+    if ($q) { $items = $items | Where-Object { $_.Name.ToLower().Contains($q) -or $_.Category.ToLower().Contains($q) -or $_.Plugin.ToLower().Contains($q) -or $_.Description.ToLower().Contains($q) } }
 
-    foreach ($t in $items) {
+    foreach ($t in ($items | Sort-Object Plugin,Category,Name)) {
         $prefix = if ($Script:Favorites -contains $t.RelativePath) { "★ " } else { "" }
         $li = New-Object System.Windows.Forms.ListViewItem($prefix + $t.Name)
+        $li.SubItems.Add($t.Plugin) | Out-Null
         $li.SubItems.Add($t.Category) | Out-Null
         $li.SubItems.Add($t.Extension) | Out-Null
         $li.SubItems.Add($t.Description) | Out-Null
@@ -239,14 +248,17 @@ function Refresh-ToolList {
     }
 }
 
-function Load-ToolsToUI {
+function Load-Platform {
+    $Script:AllPlugins = @(Get-JJTPlugins)
     $Script:AllTools = @(Get-JJTTools)
-    Refresh-Categories
+    Refresh-Filters
     Refresh-ToolList
+    Append-Output "Loaded $($Script:AllPlugins.Count) plugins and $($Script:AllTools.Count) tools."
 }
 
 $search.Add_TextChanged({ Refresh-ToolList })
 $category.Add_SelectedIndexChanged({ Refresh-ToolList })
+$pluginBox.Add_SelectedIndexChanged({ Refresh-ToolList })
 $toolList.Add_DoubleClick({ if ($toolList.SelectedItems.Count -gt 0) { Run-Tool $toolList.SelectedItems[0].Tag } })
 $btnRun.Add_Click({ if ($toolList.SelectedItems.Count -gt 0) { Run-Tool $toolList.SelectedItems[0].Tag } })
 $btnFav.Add_Click({
@@ -258,11 +270,11 @@ $btnFav.Add_Click({
         Refresh-ToolList
     }
 })
-$btnReload.Add_Click({ Load-ToolsToUI })
-$btnFolder.Add_Click({ Start-Process explorer.exe $Script:ToolsDir })
+$btnReload.Add_Click({ Load-Platform })
+$btnPlugins.Add_Click({ Start-Process explorer.exe (Join-Path $Script:BaseDir "Plugins") })
 $btnUpdate.Add_Click({ Invoke-JJTUpdate })
 $btnClear.Add_Click({ $output.Clear() })
 $btnCopy.Add_Click({ if ($output.Text) { [System.Windows.Forms.Clipboard]::SetText($output.Text) } })
 
-Load-ToolsToUI
+Load-Platform
 [void]$form.ShowDialog()
