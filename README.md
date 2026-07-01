@@ -1,6 +1,6 @@
 # JayJaysToolkit
 
-PowerShell-only, GitHub-hosted technician toolkit. No compiled EXE required.
+PowerShell-only, plugin-based, GitHub-hosted field technician platform.
 
 ## Install from any internet-connected computer
 
@@ -14,40 +14,76 @@ powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.c
 .\Start.ps1
 ```
 
-or double-click:
+or:
 
 ```text
 Start-JayJaysToolkit.bat
 ```
 
-## Why PowerShell-only?
+## Architecture
 
-Unsigned EXEs are more likely to be flagged by antivirus. This version keeps everything as inspectable PowerShell, BAT, CMD, JSON, and optional portable tools.
+```text
+Core/
+Plugins/
+  CoreWindows/
+    plugin.json
+    Tools/
+  BackupRestore/
+  Networking/
+  Microsoft365/
+  Security/
+  PortableApps/
+  Sysinternals/
+  RMMRemoteSupport/
+  OSDCloud/
+  VendorTools/
+  ThirdPartyLaunchers/
+```
 
-## Update
+Each plugin has its own `plugin.json`, tools, and metadata.
 
-Click **Update** inside the GUI to pull the latest files from GitHub.
+## Tool metadata
 
-## Add tools
+Each tool can have a matching `.json` file:
 
-Drop `.ps1`, `.bat`, `.cmd`, `.exe`, `.msi`, or `.url` files under `Tools\<Category>`.
-Add a matching `.json` file for metadata.
+```json
+{
+  "Name": "BitLocker Status",
+  "Category": "BitLocker",
+  "Description": "Shows BitLocker status.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}
+```
 
+Execution modes:
 
-## Backup and Restore
+- `Console` — output appears in the live console
+- `Interactive` — opens its own PowerShell/CMD window for prompts
+- `External` — launches GUI apps, EXEs, URLs, MSI installers, etc.
 
-This build includes the full Backup and Restore category:
+## Included plugin groups
 
-- Full Backup Migration
-- Restore Migration Backup
-- Quick Backup User Folders
-- Restore Checklist HTML Export
+- Core Windows
+- Backup and Restore
+- Networking
+- Microsoft 365
+- Security
+- Portable Apps
+- Sysinternals
+- RMM and Remote Support
+- OSDCloud
+- Vendor Tools
+- Third Party Launchers
 
-These tools appear automatically in the GUI under **Backup and Restore**.
+## Third-party launchers
 
+The toolkit includes a launcher for:
 
-## Interactive backup/restore fix
+```powershell
+irm https://christitus.com/win | iex
+```
 
-Backup and restore tools are now set to `ExecutionMode: Interactive`.
-
-This is important because those scripts use prompts like `Read-Host` and long-running `robocopy` output. They now launch in their own PowerShell window and remain open instead of hanging inside the embedded live console.
+It requires confirmation before running.

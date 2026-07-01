@@ -1,5 +1,4 @@
 $ErrorActionPreference = "Stop"
-
 $GitHubUser = "jmjohnson5471"
 $RepoName   = "JayJaysToolkit"
 $Branch     = "main"
@@ -10,14 +9,12 @@ $WorkPath    = Join-Path $env:TEMP "JayJaysToolkit_Install"
 $ZipPath     = Join-Path $env:TEMP "JayJaysToolkit.zip"
 
 Write-Host "Installing JayJaysToolkit from $RepoZipUrl" -ForegroundColor Green
-
 Remove-Item $WorkPath -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item $ZipPath -Force -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force -Path $WorkPath | Out-Null
 
 Invoke-WebRequest -Uri $RepoZipUrl -OutFile $ZipPath -UseBasicParsing
 Expand-Archive -Path $ZipPath -DestinationPath $WorkPath -Force
-
 $ExtractedRoot = Get-ChildItem $WorkPath -Directory | Select-Object -First 1
 if (-not $ExtractedRoot) { throw "Could not find extracted repo folder." }
 
