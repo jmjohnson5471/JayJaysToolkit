@@ -1,0 +1,9 @@
+{
+  "Name": "Plugin Marketplace Foundation",
+  "Category": "Marketplace",
+  "Description": "Creates a local marketplace manifest foundation for future plugin installation workflows.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}
