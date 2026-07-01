@@ -2,12 +2,24 @@
 $ErrorActionPreference = "SilentlyContinue"
 
 function Get-RegValue {
-    param($Path, $Name)
-    try {
-        (Get-ItemProperty -Path $Path -Name $Name).$Name
-    } catch {
-        ""
+    param([string]$Path,[string]$Name)
+    try { (Get-ItemProperty -Path $Path -Name $Name).$Name } catch { "" }
+}
+
+function Get-ActualWindowsName {
+    param([int]$Build,[string]$Edition)
+
+    $family = if ($Build -ge 22000) { "Windows 11" } else { "Windows 10" }
+
+    $editionFriendly = switch -Regex ($Edition) {
+        "Professional" { "Pro"; break }
+        "Enterprise"   { "Enterprise"; break }
+        "Education"    { "Education"; break }
+        "Core"         { "Home"; break }
+        default        { if ($Edition) { $Edition } else { "" } }
     }
+
+    return "$family $editionFriendly".Trim()
 }
 
 function Get-WindowsVersion {
@@ -18,13 +30,11 @@ function Get-WindowsVersion {
     if ([string]::IsNullOrWhiteSpace($display)) { "Unknown" } else { $display }
 }
 
-function Get-WindowsProductKey {
+function Get-FullProductKey {
     try {
         $key = (Get-CimInstance SoftwareLicensingService).OA3xOriginalProductKey
         if ([string]::IsNullOrWhiteSpace($key)) { "Not detected" } else { $key }
-    } catch {
-        "Not detected"
-    }
+    } catch { "Not detected" }
 }
 
 function Get-ActivationStatus {
@@ -33,17 +43,22 @@ function Get-ActivationStatus {
             Where-Object { $_.PartialProductKey -and $_.LicenseStatus -eq 1 } |
             Select-Object -First 1
         if ($lic) { "Activated" } else { "Not activated / unknown" }
-    } catch {
-        "Unknown"
-    }
+    } catch { "Unknown" }
+}
+
+function Get-LicenseChannel {
+    try {
+        $lic = Get-CimInstance SoftwareLicensingProduct |
+            Where-Object { $_.PartialProductKey -and $_.Name -match "Windows" } |
+            Select-Object -First 1
+        if ($lic.Description) { $lic.Description } else { "Unknown" }
+    } catch { "Unknown" }
 }
 
 function Get-SecureBootStatus {
     try {
         if (Confirm-SecureBootUEFI) { "Enabled" } else { "Disabled" }
-    } catch {
-        "Unavailable / Legacy BIOS"
-    }
+    } catch { "Unavailable / Legacy BIOS" }
 }
 
 function Get-TPMStatus {
@@ -52,9 +67,7 @@ function Get-TPMStatus {
         if ($t.TpmPresent -and $t.TpmReady) { "Present and Ready" }
         elseif ($t.TpmPresent) { "Present but not ready" }
         else { "Not present" }
-    } catch {
-        "Unknown"
-    }
+    } catch { "Unknown" }
 }
 
 function Get-BitLockerStatus {
@@ -69,30 +82,47 @@ function Get-BitLockerStatus {
     }
 }
 
-function Write-Line {
-    param(
-        [string]$Label,
-        [string]$Value,
-        [string]$Color = "White"
+function Get-DefenderQuick {
+    try {
+        $d = Get-MpComputerStatus
+        if ($d.AntivirusEnabled -and $d.RealTimeProtectionEnabled) { "Enabled / Real-Time On" }
+        elseif ($d.AntivirusEnabled) { "Enabled / Real-Time Off" }
+        else { "Disabled" }
+    } catch { "Unknown" }
+}
+
+function Get-RebootPending {
+    $paths = @(
+        "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending",
+        "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired"
     )
-    Write-Host ("{0,-18}: " -f $Label) -NoNewline -ForegroundColor DarkGray
-    Write-Host $Value -ForegroundColor $Color
+    foreach ($p in $paths) { if (Test-Path $p) { return "Pending" } }
+    return "No"
 }
 
 function Get-Color {
     param([string]$Value)
-    if ($Value -match "Activated|Enabled|Ready|True|On|Fully") { return "Green" }
-    if ($Value -match "Not|Disabled|Unavailable|Unknown|Off") { return "Yellow" }
+    if ($Value -match "Activated|Enabled|Ready|True|On|No$|Fully|Present and Ready") { return "Green" }
+    if ($Value -match "Pending|Not activated|Disabled|Unavailable|Unknown|Off|Not present") { return "Yellow" }
     return "White"
+}
+
+function Write-Line {
+    param([string]$Label,[string]$Value,[string]$Color = "White")
+    Write-Host ("{0,-20}: " -f $Label) -NoNewline -ForegroundColor DarkGray
+    Write-Host $Value -ForegroundColor $Color
 }
 
 Clear-Host
 
 $cvPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion"
-$osName = Get-RegValue $cvPath "ProductName"
-$build = Get-RegValue $cvPath "CurrentBuild"
+$rawBuild = Get-RegValue $cvPath "CurrentBuild"
 $ubr = Get-RegValue $cvPath "UBR"
-if ($ubr -ne "") { $build = "$build.$ubr" }
+$edition = Get-RegValue $cvPath "EditionID"
+$installDate = Get-RegValue $cvPath "InstallDate"
+$buildInt = 0
+[int]::TryParse($rawBuild, [ref]$buildInt) | Out-Null
+$buildFull = if ($ubr -ne "") { "$rawBuild.$ubr" } else { "$rawBuild" }
 
 $cs = Get-CimInstance Win32_ComputerSystem
 $bios = Get-CimInstance Win32_BIOS
@@ -108,40 +138,56 @@ $dns = if ($ipConfig.DNSServer.ServerAddresses) { ($ipConfig.DNSServer.ServerAdd
 
 $uptime = (Get-Date) - $os.LastBootUpTime
 
+$windowsName = Get-ActualWindowsName -Build $buildInt -Edition $edition
+$version = Get-WindowsVersion
+$key = Get-FullProductKey
 $activation = Get-ActivationStatus
+$channel = Get-LicenseChannel
 $secureBoot = Get-SecureBootStatus
 $tpm = Get-TPMStatus
 $bitlocker = Get-BitLockerStatus
+$defender = Get-DefenderQuick
+$reboot = Get-RebootPending
 
-Write-Host "============================================================" -ForegroundColor Green
-Write-Host " JayJaysToolkit - Quick System Reference" -ForegroundColor Green
-Write-Host "============================================================" -ForegroundColor Green
+Write-Host "================================================================" -ForegroundColor Green
+Write-Host " JayJaysToolkit - Quick System Reference v3" -ForegroundColor Green
+Write-Host "================================================================" -ForegroundColor Green
 Write-Host ""
 
+Write-Host "Operating System" -ForegroundColor Green
+Write-Line "Windows" $windowsName
+Write-Line "Version" $version
+Write-Line "Build" $buildFull
+Write-Line "Architecture" $os.OSArchitecture
+Write-Line "Installed" ([DateTimeOffset]::FromUnixTimeSeconds([int64]$installDate).DateTime.ToString("yyyy-MM-dd HH:mm:ss"))
+Write-Line "Activation" $activation (Get-Color $activation)
+Write-Line "License Channel" $channel
+Write-Line "Product Key" $key "Cyan"
+
+Write-Host ""
+Write-Host "Hardware" -ForegroundColor Green
 Write-Line "Computer Name" $env:COMPUTERNAME
 Write-Line "Logged In User" "$env:USERDOMAIN\$env:USERNAME"
-Write-Line "OS" $osName
-Write-Line "Version" (Get-WindowsVersion)
-Write-Line "Build" $build
-Write-Line "Product Key" (Get-WindowsProductKey) "Cyan"
-Write-Line "Activation" $activation (Get-Color $activation)
 Write-Line "Manufacturer" $cs.Manufacturer
 Write-Line "Model" $cs.Model
 Write-Line "Serial Number" $bios.SerialNumber
 Write-Line "BIOS Version" $bios.SMBIOSBIOSVersion
 Write-Line "CPU" $cpu.Name
 Write-Line "RAM" ("{0:N1} GB" -f ($cs.TotalPhysicalMemory / 1GB))
-
 if ($disk) {
     Write-Line "C: Size" ("{0:N1} GB" -f ($disk.Size / 1GB))
     Write-Line "C: Free" ("{0:N1} GB" -f ($disk.FreeSpace / 1GB))
 }
 
+Write-Host ""
+Write-Host "Security / Health" -ForegroundColor Green
 Write-Line "Domain" $cs.Domain
 Write-Line "Domain Joined" ([string]$cs.PartOfDomain) (Get-Color ([string]$cs.PartOfDomain))
 Write-Line "Secure Boot" $secureBoot (Get-Color $secureBoot)
 Write-Line "TPM" $tpm (Get-Color $tpm)
 Write-Line "BitLocker C" $bitlocker (Get-Color $bitlocker)
+Write-Line "Defender" $defender (Get-Color $defender)
+Write-Line "Reboot Pending" $reboot (Get-Color $reboot)
 Write-Line "Last Boot" ([string]$os.LastBootUpTime)
 Write-Line "Uptime" ("{0} days, {1} hours" -f [int]$uptime.TotalDays,$uptime.Hours)
 
@@ -152,24 +198,20 @@ Write-Line "IPv4" $ipv4
 Write-Line "Gateway" $gateway
 Write-Line "DNS" $dns
 
-Write-Host ""
-Write-Host "Options" -ForegroundColor Green
-Write-Host "  C = Copy this screen to clipboard"
-Write-Host "  E = Export this screen to TXT on Desktop"
-Write-Host "  Q = Quit"
-Write-Host ""
-
 $lines = @(
-"JayJaysToolkit - Quick System Reference",
+"JayJaysToolkit - Quick System Reference v3",
 "Generated: $(Get-Date)",
+"",
+"Windows          : $windowsName",
+"Version          : $version",
+"Build            : $buildFull",
+"Architecture     : $($os.OSArchitecture)",
+"Activation       : $activation",
+"License Channel  : $channel",
+"Product Key      : $key",
 "",
 "Computer Name    : $env:COMPUTERNAME",
 "Logged In User   : $env:USERDOMAIN\$env:USERNAME",
-"OS               : $osName",
-"Version          : $(Get-WindowsVersion)",
-"Build            : $build",
-"Product Key      : $(Get-WindowsProductKey)",
-"Activation       : $activation",
 "Manufacturer     : $($cs.Manufacturer)",
 "Model            : $($cs.Model)",
 "Serial Number    : $($bios.SerialNumber)",
@@ -178,11 +220,14 @@ $lines = @(
 "RAM              : $('{0:N1} GB' -f ($cs.TotalPhysicalMemory / 1GB))",
 "C: Size          : $('{0:N1} GB' -f ($disk.Size / 1GB))",
 "C: Free          : $('{0:N1} GB' -f ($disk.FreeSpace / 1GB))",
+"",
 "Domain           : $($cs.Domain)",
 "Domain Joined    : $($cs.PartOfDomain)",
 "Secure Boot      : $secureBoot",
 "TPM              : $tpm",
 "BitLocker C      : $bitlocker",
+"Defender         : $defender",
+"Reboot Pending   : $reboot",
 "Last Boot        : $($os.LastBootUpTime)",
 "Uptime           : $('{0} days, {1} hours' -f [int]$uptime.TotalDays,$uptime.Hours)",
 "",
@@ -191,6 +236,13 @@ $lines = @(
 "Gateway          : $gateway",
 "DNS              : $dns"
 )
+
+Write-Host ""
+Write-Host "Options" -ForegroundColor Green
+Write-Host "  C = Copy to clipboard"
+Write-Host "  E = Export to TXT on Desktop"
+Write-Host "  Q = Quit"
+Write-Host ""
 
 $choice = Read-Host "Choose"
 switch ($choice.ToUpper()) {

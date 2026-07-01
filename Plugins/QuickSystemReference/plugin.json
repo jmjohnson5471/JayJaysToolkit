@@ -1,8 +1,8 @@
 {
   "Id": "QuickSystemReference",
   "Name": "Quick System Reference",
-  "Version": "2.0.0",
-  "Description": "Reliable standalone quick system reference using a PS1 launched from BAT.",
+  "Version": "3.0.0",
+  "Description": "Technician dashboard with accurate Windows 10/11 detection based on build number.",
   "Author": "JayJaysToolkit",
   "Enabled": true
 }

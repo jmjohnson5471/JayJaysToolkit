@@ -1,7 +1,7 @@
 {
-  "Name": "Quick System Reference",
+  "Name": "Quick System Reference v3",
   "Category": "Computer Inventory",
-  "Description": "Reliable quick reference screen with Windows version, full product key, activation, serial, model, CPU, RAM, disk, network, Secure Boot, TPM, and BitLocker.",
+  "Description": "Technician dashboard with accurate Windows 10/11 detection based on build number, full product key, activation, license channel, hardware, security, and network info.",
   "RunAsAdmin": true,
   "Hidden": false,
   "Arguments": "",
