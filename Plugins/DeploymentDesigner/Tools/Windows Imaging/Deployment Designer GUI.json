@@ -1,9 +1,0 @@
-{
-  "Name": "Deployment Designer GUI",
-  "Category": "Windows Imaging",
-  "Description": "PowerShell GUI deployment designer with XML preview and selectable export folder destination.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Interactive"
-}
