@@ -1,9 +1,0 @@
-{
-  "Name": "Deployment Designer Exporter",
-  "Category": "Windows Imaging",
-  "Description": "Reliable PowerShell deployment designer that exports autounattend.xml, deployment profile JSON, and deployment plan TXT.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Interactive"
-}

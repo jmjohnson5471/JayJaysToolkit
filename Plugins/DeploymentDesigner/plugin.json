@@ -1,8 +1,0 @@
-{
-  "Id": "DeploymentDesigner",
-  "Name": "Deployment Designer",
-  "Version": "2.0.0",
-  "Description": "PowerShell-based deployment designer that reliably exports autounattend.xml locally.",
-  "Author": "JayJaysToolkit",
-  "Enabled": true
-}
