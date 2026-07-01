@@ -1,7 +1,20 @@
 $ErrorActionPreference = "Continue"
 
-$ToolPath = $MyInvocation.MyCommand.Path
-$BaseDir = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $ToolPath)))
+function Get-JJTBaseDirFromTool {
+    $current = Split-Path -Parent $MyInvocation.MyCommand.Path
+    while ($current) {
+        if ((Test-Path (Join-Path $current "Plugins")) -and (Test-Path (Join-Path $current "Core"))) {
+            return $current
+        }
+        $parent = Split-Path -Parent $current
+        if ($parent -eq $current) { break }
+        $current = $parent
+    }
+
+    return Split-Path -Parent (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path))))
+}
+
+$BaseDir = Get-JJTBaseDirFromTool
 $PluginsDir = Join-Path $BaseDir "Plugins"
 
 Clear-Host
@@ -9,6 +22,15 @@ Write-Host "============================================================" -Foreg
 Write-Host " JayJaysToolkit - Plugin Manager" -ForegroundColor Green
 Write-Host "============================================================" -ForegroundColor Green
 Write-Host ""
+Write-Host "BaseDir    : $BaseDir"
+Write-Host "PluginsDir : $PluginsDir"
+Write-Host ""
+
+if (!(Test-Path $PluginsDir)) {
+    Write-Host "Plugins folder was not found." -ForegroundColor Red
+    Read-Host "Press Enter to close"
+    exit
+}
 
 $plugins = Get-ChildItem $PluginsDir -Directory | ForEach-Object {
     $manifest = Join-Path $_.FullName "plugin.json"
@@ -28,7 +50,6 @@ $plugins = Get-ChildItem $PluginsDir -Directory | ForEach-Object {
                 Name = $p.Name
                 Version = $p.Version
                 Tools = $toolCount
-                Path = $_.FullName
                 Description = $p.Description
             }
         } catch {
@@ -38,14 +59,17 @@ $plugins = Get-ChildItem $PluginsDir -Directory | ForEach-Object {
                 Name = $_.Name
                 Version = "ERROR"
                 Tools = 0
-                Path = $_.FullName
                 Description = "Invalid plugin.json"
             }
         }
     }
 }
 
-$plugins | Sort-Object Name | Format-Table Enabled,Name,Version,Tools,Description -AutoSize
+if (!$plugins) {
+    Write-Host "No plugins found." -ForegroundColor Yellow
+} else {
+    $plugins | Sort-Object Name | Format-Table Enabled,Name,Version,Tools,Description -AutoSize
+}
 
 Write-Host ""
 Write-Host "Options:" -ForegroundColor Green
@@ -66,6 +90,7 @@ switch ($choice.ToUpper()) {
 <style>body{font-family:Segoe UI;margin:30px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ccc;padding:8px}th{background:#eee}</style>
 </head><body><h1>JayJaysToolkit Plugin Report</h1>
 <p>Generated: $(Get-Date)</p>
+<p>BaseDir: $BaseDir</p>
 $($plugins | Sort-Object Name | ConvertTo-Html -Fragment)
 </body></html>
 "@

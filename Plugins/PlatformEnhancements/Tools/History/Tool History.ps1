@@ -1,7 +1,24 @@
 $ErrorActionPreference = "Continue"
 
+function Get-JJTBaseDirFromTool {
+    $current = Split-Path -Parent $MyInvocation.MyCommand.Path
+    while ($current) {
+        if ((Test-Path (Join-Path $current "Plugins")) -and (Test-Path (Join-Path $current "Core"))) {
+            return $current
+        }
+        $parent = Split-Path -Parent $current
+        if ($parent -eq $current) { break }
+        $current = $parent
+    }
+
+    # Fallback for normal plugin path:
+    # Base\Plugins\PluginName\Tools\Category\Tool.ps1
+    return Split-Path -Parent (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path))))
+}
+
+
 $ToolPath = $MyInvocation.MyCommand.Path
-$BaseDir = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $ToolPath)))
+$BaseDir = Get-JJTBaseDirFromTool
 $LogsDir = Join-Path $BaseDir "Logs"
 
 Clear-Host
