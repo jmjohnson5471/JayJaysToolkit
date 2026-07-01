@@ -1,0 +1,9 @@
+{
+  "Name": "Local Autounattend Wizard",
+  "Category": "Unattend",
+  "Description": "Runs a local/offline wizard to generate a basic autounattend.xml without sending values to a website.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}

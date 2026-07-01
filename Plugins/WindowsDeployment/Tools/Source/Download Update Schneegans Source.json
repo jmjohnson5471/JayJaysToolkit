@@ -1,0 +1,9 @@
+{
+  "Name": "Download Update Schneegans Source",
+  "Category": "Source",
+  "Description": "Downloads the public cschneegans/unattend-generator source into the plugin LocalGenerator folder for local review/use.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}
