@@ -1,0 +1,9 @@
+{
+  "Name": "Schedule CHKDSK C",
+  "Category": "Windows Repair",
+  "Description": "Schedules CHKDSK repair on C:.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

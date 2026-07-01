@@ -1,0 +1,9 @@
+{
+  "Name": "Winsock Reset",
+  "Category": "Repair",
+  "Description": "Resets network stack. Reboot recommended.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

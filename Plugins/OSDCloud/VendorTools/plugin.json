@@ -1,0 +1,8 @@
+{
+  "Id": "VendorTools",
+  "Name": "Vendor Tools",
+  "Version": "1.0.0",
+  "Description": "Dell, HP, and Lenovo technician utilities.",
+  "Author": "JayJaysToolkit",
+  "Enabled": true
+}

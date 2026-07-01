@@ -1,0 +1,9 @@
+{
+  "Name": "Full Backup Migration",
+  "Category": "Backup and Restore",
+  "Description": "Backs up user folders, browsers, Wi-Fi, drivers, printers, software list, BitLocker, and system reports.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}

@@ -1,0 +1,8 @@
+{
+  "Id": "RMMRemoteSupport",
+  "Name": "RMM and Remote Support",
+  "Version": "1.0.0",
+  "Description": "Ninja, Tactical RMM, RustDesk, and remote support helper tools.",
+  "Author": "JayJaysToolkit",
+  "Enabled": true
+}

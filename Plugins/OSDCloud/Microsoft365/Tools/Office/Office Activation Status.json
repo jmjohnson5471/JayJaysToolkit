@@ -1,0 +1,9 @@
+{
+  "Name": "Office Activation Status",
+  "Category": "Office",
+  "Description": "Shows Office activation status.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

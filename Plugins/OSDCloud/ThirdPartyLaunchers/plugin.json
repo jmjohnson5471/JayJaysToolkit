@@ -1,0 +1,8 @@
+{
+  "Id": "ThirdPartyLaunchers",
+  "Name": "Third Party Launchers",
+  "Version": "1.0.0",
+  "Description": "Safe launchers for outside utilities such as Chris Titus Tech.",
+  "Author": "JayJaysToolkit",
+  "Enabled": true
+}

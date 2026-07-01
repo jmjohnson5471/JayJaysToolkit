@@ -1,0 +1,9 @@
+{
+  "Name": "Internet/M365 Connectivity",
+  "Category": "Diagnostics",
+  "Description": "Tests internet and M365 connectivity.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

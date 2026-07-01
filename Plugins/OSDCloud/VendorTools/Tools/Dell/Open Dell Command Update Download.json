@@ -1,0 +1,9 @@
+{
+  "Name": "Dell Command Update Download",
+  "Category": "Dell",
+  "Description": "Opens Dell Command Update page.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "External"
+}

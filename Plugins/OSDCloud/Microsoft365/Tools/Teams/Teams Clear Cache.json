@@ -1,0 +1,9 @@
+{
+  "Name": "Teams Clear Cache",
+  "Category": "Teams",
+  "Description": "Clears Teams cache.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

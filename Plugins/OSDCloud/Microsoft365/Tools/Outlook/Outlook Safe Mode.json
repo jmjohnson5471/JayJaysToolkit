@@ -1,0 +1,9 @@
+{
+  "Name": "Outlook Safe Mode",
+  "Category": "Outlook",
+  "Description": "Starts Outlook in safe mode.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "External"
+}

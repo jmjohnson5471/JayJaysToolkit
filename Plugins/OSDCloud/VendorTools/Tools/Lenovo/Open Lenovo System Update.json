@@ -1,0 +1,9 @@
+{
+  "Name": "Lenovo System Update",
+  "Category": "Lenovo",
+  "Description": "Opens Lenovo System Update page.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "External"
+}

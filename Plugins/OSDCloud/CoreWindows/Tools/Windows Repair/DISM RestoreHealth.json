@@ -1,0 +1,9 @@
+{
+  "Name": "DISM RestoreHealth",
+  "Category": "Windows Repair",
+  "Description": "Repairs the Windows component store.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}
