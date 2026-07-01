@@ -5,5 +5,7 @@
   "RunAsAdmin": true,
   "Hidden": false,
   "Arguments": "",
-  "ExecutionMode": "Console"
+  "ExecutionMode": "Console",
+  "Confirm": true,
+  "ConfirmMessage": "This resets the network stack (Winsock + IP). It can briefly drop ALL network connectivity, including any remote support session (RustDesk/RDP/etc.) you're currently using. A reboot may be required. Continue?"
 }

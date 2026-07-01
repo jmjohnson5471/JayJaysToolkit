@@ -5,5 +5,7 @@
   "RunAsAdmin": true,
   "Hidden": false,
   "Arguments": "",
-  "ExecutionMode": "Console"
+  "ExecutionMode": "Console",
+  "Confirm": true,
+  "ConfirmMessage": "If you are remotely connected through RustDesk right now, restarting this service will likely DROP your current remote session. Continue?"
 }

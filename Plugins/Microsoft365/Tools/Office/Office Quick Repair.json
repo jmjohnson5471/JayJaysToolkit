@@ -5,5 +5,7 @@
   "RunAsAdmin": true,
   "Hidden": false,
   "Arguments": "",
-  "ExecutionMode": "External"
+  "ExecutionMode": "External",
+  "Confirm": true,
+  "ConfirmMessage": "This force-closes all running Office applications (unsaved work will be lost) and starts an Office Quick Repair. Continue?"
 }
