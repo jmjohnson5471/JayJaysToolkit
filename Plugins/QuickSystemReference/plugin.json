@@ -1,8 +1,8 @@
 {
   "Id": "QuickSystemReferenceBAT",
   "Name": "Quick System Reference BAT",
-  "Version": "1.0.0",
-  "Description": "Ultra-fast batch-based quick system reference.",
+  "Version": "1.1.0",
+  "Description": "Ultra-fast quick system reference without WMIC.",
   "Author": "JayJaysToolkit",
   "Enabled": true
 }

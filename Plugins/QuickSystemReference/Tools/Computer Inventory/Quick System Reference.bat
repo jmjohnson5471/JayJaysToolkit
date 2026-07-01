@@ -7,19 +7,30 @@ echo ========================================
 echo.
 echo Computer Name : %COMPUTERNAME%
 echo User          : %USERDOMAIN%\%USERNAME%
-for /f "tokens=3*" %%A in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName ^| find "ProductName"') do echo OS            : %%A %%B
-for /f "tokens=3" %%A in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v DisplayVersion ^| find "DisplayVersion"') do echo Version       : %%A
-for /f "tokens=3" %%A in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentBuild ^| find "CurrentBuild"') do echo Build         : %%A
-for /f "tokens=2 delims==" %%A in ('wmic computersystem get manufacturer /value ^| find "="') do echo Manufacturer  : %%A
-for /f "tokens=2 delims==" %%A in ('wmic computersystem get model /value ^| find "="') do echo Model         : %%A
-for /f "tokens=2 delims==" %%A in ('wmic bios get serialnumber /value ^| find "="') do echo Serial        : %%A
-for /f "tokens=2 delims==" %%A in ('wmic cpu get name /value ^| find "="') do echo CPU           : %%A
-echo.
-echo Product Key:
-powershell -NoProfile -Command "(Get-CimInstance SoftwareLicensingService).OA3xOriginalProductKey"
-echo.
-echo Activation:
-cscript //nologo %windir%\system32\slmgr.vbs /xpr
+
+powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+"$cv=Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'; ^
+$cs=Get-CimInstance Win32_ComputerSystem; ^
+$bios=Get-CimInstance Win32_BIOS; ^
+$cpu=Get-CimInstance Win32_Processor | Select-Object -First 1; ^
+$disk=Get-CimInstance Win32_LogicalDisk -Filter \"DeviceID='C:'\"; ^
+$key=(Get-CimInstance SoftwareLicensingService).OA3xOriginalProductKey; ^
+if([string]::IsNullOrWhiteSpace($key)){$key='Not detected'}; ^
+$lic=Get-CimInstance SoftwareLicensingProduct | Where-Object {$_.PartialProductKey -and $_.LicenseStatus -eq 1} | Select-Object -First 1; ^
+$act=if($lic){'Activated'}else{'Not activated / unknown'}; ^
+Write-Host ('OS            : ' + $cv.ProductName); ^
+Write-Host ('Version       : ' + $(if($cv.DisplayVersion){$cv.DisplayVersion}else{$cv.ReleaseId})); ^
+Write-Host ('Build         : ' + $cv.CurrentBuild); ^
+Write-Host ('Manufacturer  : ' + $cs.Manufacturer); ^
+Write-Host ('Model         : ' + $cs.Model); ^
+Write-Host ('Serial        : ' + $bios.SerialNumber); ^
+Write-Host ('CPU           : ' + $cpu.Name); ^
+Write-Host ('RAM           : ' + [math]::Round($cs.TotalPhysicalMemory/1GB,1) + ' GB'); ^
+Write-Host ('C: Size       : ' + [math]::Round($disk.Size/1GB,1) + ' GB'); ^
+Write-Host ('C: Free       : ' + [math]::Round($disk.FreeSpace/1GB,1) + ' GB'); ^
+Write-Host ('Product Key   : ' + $key); ^
+Write-Host ('Activation    : ' + $act);"
+
 echo.
 echo IPv4 / Gateway:
 ipconfig | findstr /i "IPv4 Default Gateway"
