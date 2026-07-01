@@ -1,8 +1,0 @@
-{
-  "Id": "LocalUnattendGenerator",
-  "Name": "Local Unattend Generator",
-  "Version": "1.0.0",
-  "Description": "Offline local autounattend.xml generator for Windows 10/11 technician workflows.",
-  "Author": "JayJaysToolkit",
-  "Enabled": true
-}

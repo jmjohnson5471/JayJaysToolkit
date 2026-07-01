@@ -1,9 +1,0 @@
-{
-  "Name": "Launch Local Unattend Generator",
-  "Category": "Windows Imaging",
-  "Description": "Opens the offline local autounattend.xml generator for Windows 10/11.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "Interactive"
-}
