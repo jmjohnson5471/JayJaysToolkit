@@ -1,0 +1,9 @@
+{
+  "Name": "Quick System Reference Standalone",
+  "Category": "Computer Inventory",
+  "Description": "Opens a standalone quick reference PowerShell window with important system details, copy/export/refresh options, public IP lookup, and visible full product key.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}

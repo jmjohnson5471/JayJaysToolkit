@@ -1,0 +1,8 @@
+{
+  "Id": "QuickSystemReference",
+  "Name": "Quick System Reference",
+  "Version": "1.0.0",
+  "Description": "Standalone quick system reference screen with copy, export, and refresh options.",
+  "Author": "JayJaysToolkit",
+  "Enabled": true
+}
