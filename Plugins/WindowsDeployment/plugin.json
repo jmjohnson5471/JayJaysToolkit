@@ -1,8 +1,0 @@
-{
-  "Id": "WindowsDeployment",
-  "Name": "Windows Deployment",
-  "Version": "1.0.0",
-  "Description": "Local/offline Windows deployment tools including a local autounattend.xml wizard and optional Schneegans source downloader.",
-  "Author": "JayJaysToolkit",
-  "Enabled": true
-}

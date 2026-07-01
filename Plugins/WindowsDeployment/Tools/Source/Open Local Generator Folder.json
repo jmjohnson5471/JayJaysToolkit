@@ -1,9 +1,0 @@
-{
-  "Name": "Open Local Generator Folder",
-  "Category": "Source",
-  "Description": "Opens the plugin's LocalGenerator folder.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "External"
-}

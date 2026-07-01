@@ -1,9 +1,0 @@
-{
-  "Name": "Open Autounattend Templates Folder",
-  "Category": "Templates",
-  "Description": "Opens the local autounattend templates folder.",
-  "RunAsAdmin": false,
-  "Hidden": false,
-  "Arguments": "",
-  "ExecutionMode": "External"
-}
