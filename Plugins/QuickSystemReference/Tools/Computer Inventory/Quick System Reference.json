@@ -1,7 +1,7 @@
 {
   "Name": "Quick System Reference",
   "Category": "Computer Inventory",
-  "Description": "Ultra-fast batch quick reference that does not use deprecated WMIC. Uses registry, PowerShell CIM, ipconfig, and manage-bde.",
+  "Description": "Reliable quick reference screen with Windows version, full product key, activation, serial, model, CPU, RAM, disk, network, Secure Boot, TPM, and BitLocker.",
   "RunAsAdmin": true,
   "Hidden": false,
   "Arguments": "",

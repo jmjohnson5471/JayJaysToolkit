@@ -1,8 +1,8 @@
 {
-  "Id": "QuickSystemReferenceBAT",
-  "Name": "Quick System Reference BAT",
-  "Version": "1.1.0",
-  "Description": "Ultra-fast quick system reference without WMIC.",
+  "Id": "QuickSystemReference",
+  "Name": "Quick System Reference",
+  "Version": "2.0.0",
+  "Description": "Reliable standalone quick system reference using a PS1 launched from BAT.",
   "Author": "JayJaysToolkit",
   "Enabled": true
 }
