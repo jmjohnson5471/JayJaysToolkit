@@ -1,0 +1,9 @@
+{
+  "Name": "Open Schneegans Web Generator",
+  "Category": "Unattend",
+  "Description": "Opens the public Schneegans Windows Unattend Generator website.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "External"
+}

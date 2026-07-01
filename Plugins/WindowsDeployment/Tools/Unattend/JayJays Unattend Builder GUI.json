@@ -1,0 +1,9 @@
+{
+  "Name": "JayJays Unattend Builder GUI",
+  "Category": "Unattend",
+  "Description": "Local GUI autounattend.xml builder with Preview XML and Export XML buttons.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "External"
+}
