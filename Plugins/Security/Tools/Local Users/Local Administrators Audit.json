@@ -1,0 +1,9 @@
+{
+  "Name": "Local Administrators Audit",
+  "Category": "Local Users",
+  "Description": "Lists local administrators.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

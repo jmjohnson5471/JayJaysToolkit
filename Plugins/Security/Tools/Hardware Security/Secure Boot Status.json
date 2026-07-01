@@ -1,0 +1,9 @@
+{
+  "Name": "Secure Boot Status",
+  "Category": "Hardware Security",
+  "Description": "Shows Secure Boot status.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

@@ -1,0 +1,9 @@
+{
+  "Name": "TPM Status",
+  "Category": "Hardware Security",
+  "Description": "Shows TPM status.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

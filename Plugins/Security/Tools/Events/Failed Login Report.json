@@ -1,0 +1,9 @@
+{
+  "Name": "Failed Login Report",
+  "Category": "Events",
+  "Description": "Shows recent failed logons.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

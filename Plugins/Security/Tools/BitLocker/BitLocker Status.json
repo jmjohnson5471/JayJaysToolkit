@@ -1,0 +1,9 @@
+{
+  "Name": "BitLocker Status",
+  "Category": "BitLocker",
+  "Description": "Shows BitLocker status.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

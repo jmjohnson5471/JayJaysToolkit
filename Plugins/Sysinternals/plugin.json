@@ -1,0 +1,8 @@
+{
+  "Id": "Sysinternals",
+  "Name": "Sysinternals",
+  "Version": "1.0.0",
+  "Description": "Download and launch Microsoft Sysinternals tools.",
+  "Author": "JayJaysToolkit",
+  "Enabled": true
+}

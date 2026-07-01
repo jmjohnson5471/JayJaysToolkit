@@ -1,0 +1,9 @@
+{
+  "Name": "Defender Health",
+  "Category": "Defender",
+  "Description": "Shows Defender health.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

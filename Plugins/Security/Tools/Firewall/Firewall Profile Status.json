@@ -1,0 +1,9 @@
+{
+  "Name": "Firewall Profile Status",
+  "Category": "Firewall",
+  "Description": "Shows firewall profile status.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

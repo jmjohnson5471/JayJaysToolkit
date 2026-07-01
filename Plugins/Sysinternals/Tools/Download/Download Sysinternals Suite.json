@@ -1,0 +1,9 @@
+{
+  "Name": "Download Sysinternals Suite",
+  "Category": "Download",
+  "Description": "Downloads Microsoft Sysinternals Suite ZIP.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}

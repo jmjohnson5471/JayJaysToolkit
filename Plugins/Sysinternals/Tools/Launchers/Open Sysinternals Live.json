@@ -1,0 +1,9 @@
+{
+  "Name": "Open Sysinternals Live",
+  "Category": "Launchers",
+  "Description": "Opens Sysinternals Live website.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "External"
+}

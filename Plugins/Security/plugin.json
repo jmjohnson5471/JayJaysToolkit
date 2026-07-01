@@ -1,0 +1,8 @@
+{
+  "Id": "Security",
+  "Name": "Security",
+  "Version": "1.0.0",
+  "Description": "BitLocker, Defender, firewall, TPM, Secure Boot, and local admin auditing.",
+  "Author": "JayJaysToolkit",
+  "Enabled": true
+}
