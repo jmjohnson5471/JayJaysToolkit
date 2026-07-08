@@ -1,0 +1,9 @@
+{
+  "Name": "WizTree Portable",
+  "Category": "Portable Apps",
+  "Description": "Download/update/launch WizTree.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}

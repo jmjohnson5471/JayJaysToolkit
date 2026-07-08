@@ -1,0 +1,8 @@
+{
+  "Id": "ManagedAppInstaller",
+  "Name": "Managed App Installer",
+  "Version": "1.0.0",
+  "Description": "Reusable download/install/portable app manager for JAYJAYs IT Platform.",
+  "Author": "JAYJAYs IT Platform",
+  "Enabled": true
+}

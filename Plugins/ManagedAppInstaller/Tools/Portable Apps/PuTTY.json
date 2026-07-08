@@ -1,0 +1,9 @@
+{
+  "Name": "PuTTY",
+  "Category": "Portable Apps",
+  "Description": "Download/update/launch PuTTY.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}

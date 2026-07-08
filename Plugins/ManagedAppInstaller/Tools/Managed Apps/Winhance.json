@@ -1,0 +1,9 @@
+{
+  "Name": "Winhance",
+  "Category": "Managed Apps",
+  "Description": "Normal install, portable download, or launch Winhance.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}

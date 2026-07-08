@@ -1,0 +1,60 @@
+{
+  "Winhance": {
+    "Name": "Winhance",
+    "Description": "Windows enhancement and customization utility.",
+    "DownloadUrl": "https://github.com/memstechtips/Winhance/releases/latest/download/Winhance.Installer.exe",
+    "FileName": "WinhanceInstaller.exe",
+    "Type": "Installer",
+    "InstallArgs": "/SILENT /SUPPRESSMSGBOXES /MERGETASKS=\"regularinstall\\desktopicon,regularinstall\\startmenuicon\"",
+    "PortableArgs": "/SILENT /SUPPRESSMSGBOXES /TASKS=\"portableinstall\"",
+    "InstalledExe": "%ProgramFiles%\\Winhance\\Winhance.exe",
+    "PortableExePattern": "Winhance.exe",
+    "SupportsNormalInstall": true,
+    "SupportsPortable": true,
+    "RunAsAdmin": true
+  },
+  "Sysinternals": {
+    "Name": "Sysinternals Suite",
+    "Description": "Microsoft Sysinternals troubleshooting utilities.",
+    "DownloadUrl": "https://download.sysinternals.com/files/SysinternalsSuite.zip",
+    "FileName": "SysinternalsSuite.zip",
+    "Type": "Zip",
+    "PortableExe": "Sysinternals\\procexp64.exe",
+    "SupportsNormalInstall": false,
+    "SupportsPortable": true,
+    "RunAsAdmin": false
+  },
+  "WizTree": {
+    "Name": "WizTree Portable",
+    "Description": "Fast disk space analyzer.",
+    "DownloadUrl": "https://diskanalyzer.com/files/wiztree_4_25_portable.zip",
+    "FileName": "WizTree_Portable.zip",
+    "Type": "Zip",
+    "PortableExePattern": "WizTree*.exe",
+    "SupportsNormalInstall": false,
+    "SupportsPortable": true,
+    "RunAsAdmin": true
+  },
+  "Rufus": {
+    "Name": "Rufus",
+    "Description": "USB boot media creator.",
+    "DownloadUrl": "https://github.com/pbatard/rufus/releases/latest/download/rufus-4.7p.exe",
+    "FileName": "rufus-portable.exe",
+    "Type": "ExePortable",
+    "PortableExe": "Rufus\\rufus-portable.exe",
+    "SupportsNormalInstall": false,
+    "SupportsPortable": true,
+    "RunAsAdmin": true
+  },
+  "PuTTY": {
+    "Name": "PuTTY",
+    "Description": "SSH/Telnet client.",
+    "DownloadUrl": "https://the.earth.li/~sgtatham/putty/latest/w64/putty.exe",
+    "FileName": "putty.exe",
+    "Type": "ExePortable",
+    "PortableExe": "PuTTY\\putty.exe",
+    "SupportsNormalInstall": false,
+    "SupportsPortable": true,
+    "RunAsAdmin": false
+  }
+}

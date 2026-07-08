@@ -1,0 +1,9 @@
+{
+  "Name": "Rufus",
+  "Category": "Portable Apps",
+  "Description": "Download/update/launch Rufus portable.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}

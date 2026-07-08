@@ -1,0 +1,9 @@
+{
+  "Name": "Managed Apps Overview",
+  "Category": "Managed Apps",
+  "Description": "Lists managed apps and opens the managed PortableApps folder.",
+  "RunAsAdmin": false,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}

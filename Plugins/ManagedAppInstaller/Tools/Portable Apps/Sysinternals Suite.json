@@ -1,0 +1,9 @@
+{
+  "Name": "Sysinternals Suite",
+  "Category": "Portable Apps",
+  "Description": "Download/update/launch Sysinternals.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}
