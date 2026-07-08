@@ -1,12 +1,3 @@
-<!--
-JAYJAYs IT Platform - autounattend.xml FirstLogonCommands snippet
-
-Option A: Run postinstall.ps1 from a USB drive where PostInstall is copied to:
-D:\Templates\PostInstall\postinstall.ps1
-
-You may need to change D: depending on the USB drive letter.
--->
-
 <FirstLogonCommands>
   <SynchronousCommand wcm:action="add">
     <CommandLine>powershell -ExecutionPolicy Bypass -NoProfile -File "D:\Templates\PostInstall\postinstall.ps1"</CommandLine>
@@ -15,15 +6,7 @@ You may need to change D: depending on the USB drive letter.
   </SynchronousCommand>
 </FirstLogonCommands>
 
-
-<!--
-Option B: Run from GitHub raw URL.
-
-This assumes postinstall.ps1 and apps-standard.csv are hosted in your repo.
-For GitHub usage, the script must be able to download apps-standard.csv too.
-Use the GitHub version below instead of the local-file script if you want that.
--->
-
+<!-- GitHub version -->
 <FirstLogonCommands>
   <SynchronousCommand wcm:action="add">
     <CommandLine>powershell -ExecutionPolicy Bypass -NoProfile -Command "irm https://raw.githubusercontent.com/jmjohnson5471/JayJaysToolkit/main/Templates/PostInstall/postinstall-github.ps1 | iex"</CommandLine>

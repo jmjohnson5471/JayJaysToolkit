@@ -1,18 +1,6 @@
 <# 
 JAYJAYs IT Platform - Standard Post Install Script
-
-Purpose:
-- Run after Windows setup from autounattend.xml
-- Install standard free third-party apps from apps-standard.csv using winget
-- Save logs under C:\ProgramData\JAYJAYsITPlatform\Logs
-
-Expected files:
-- postinstall.ps1
-- apps-standard.csv
-
-Recommended use:
-Copy the PostInstall folder to your deployment USB or GitHub repo.
-Call this script from FirstLogonCommands in autounattend.xml.
+FIXED: Uses separate transcript and custom log files so Add-Content does not fight Start-Transcript.
 #>
 
 $ErrorActionPreference = "Continue"
@@ -21,16 +9,22 @@ $BaseDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $LogDir = "$env:ProgramData\JAYJAYsITPlatform\Logs"
 New-Item -ItemType Directory -Force -Path $LogDir | Out-Null
 
-$LogFile = Join-Path $LogDir ("PostInstall_" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".log")
+$TimeStamp = Get-Date -Format "yyyyMMdd_HHmmss"
+$LogFile = Join-Path $LogDir "PostInstall_$TimeStamp.log"
+$TranscriptFile = Join-Path $LogDir "PostInstall_Transcript_$TimeStamp.log"
 
 function Write-Log {
     param([string]$Message)
     $line = "[{0}] {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $Message
     Write-Host $line
-    Add-Content -Path $LogFile -Value $line
+    try {
+        [System.IO.File]::AppendAllText($LogFile, $line + [Environment]::NewLine)
+    } catch {
+        Write-Host "LOG WARNING: $($_.Exception.Message)" -ForegroundColor Yellow
+    }
 }
 
-Start-Transcript -Path $LogFile -Append -ErrorAction SilentlyContinue | Out-Null
+Start-Transcript -Path $TranscriptFile -Append -ErrorAction SilentlyContinue | Out-Null
 
 Write-Log "Starting JAYJAYs IT Platform post-install."
 
@@ -42,13 +36,10 @@ if (!(Test-Path $CsvPath)) {
     exit 1
 }
 
-Write-Log "Checking winget..."
-
 $Winget = Get-Command winget.exe -ErrorAction SilentlyContinue
 
 if (!$Winget) {
-    Write-Log "winget was not found. Attempting Microsoft Store App Installer repair may be needed."
-    Write-Log "Apps will not install until winget is available."
+    Write-Log "ERROR: winget was not found. Apps will not install until winget is available."
     Stop-Transcript -ErrorAction SilentlyContinue | Out-Null
     exit 1
 }
@@ -56,9 +47,10 @@ if (!$Winget) {
 Write-Log "winget found at $($Winget.Source)"
 
 try {
+    Write-Log "Updating winget sources."
     winget source update | Out-Host
 } catch {
-    Write-Log "winget source update failed: $($_.Exception.Message)"
+    Write-Log "WARNING: winget source update failed: $($_.Exception.Message)"
 }
 
 $Apps = Import-Csv $CsvPath | Where-Object { $_.Enabled -match "true|yes|1" }
@@ -86,4 +78,7 @@ foreach ($App in $Apps) {
 }
 
 Write-Log "Post-install app installation complete."
+Write-Log "Main log: $LogFile"
+Write-Log "Transcript: $TranscriptFile"
+
 Stop-Transcript -ErrorAction SilentlyContinue | Out-Null

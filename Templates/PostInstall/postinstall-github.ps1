@@ -1,52 +1,55 @@
 <# 
-JAYJAYs IT Platform - GitHub Post Install Script
-
-This version downloads apps-standard.csv from your GitHub repo first,
-then installs the enabled apps with winget.
+JAYJAYs IT Platform - Standard Post Install Script
+FIXED: Uses separate transcript and custom log files so Add-Content does not fight Start-Transcript.
 #>
 
 $ErrorActionPreference = "Continue"
 
-$GitHubCsvUrl = "https://raw.githubusercontent.com/jmjohnson5471/JayJaysToolkit/main/Templates/PostInstall/apps-standard.csv"
-
-$WorkDir = "$env:ProgramData\JAYJAYsITPlatform\PostInstall"
+$BaseDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $LogDir = "$env:ProgramData\JAYJAYsITPlatform\Logs"
-New-Item -ItemType Directory -Force -Path $WorkDir,$LogDir | Out-Null
+New-Item -ItemType Directory -Force -Path $LogDir | Out-Null
 
-$CsvPath = Join-Path $WorkDir "apps-standard.csv"
-$LogFile = Join-Path $LogDir ("PostInstall_GitHub_" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".log")
+$TimeStamp = Get-Date -Format "yyyyMMdd_HHmmss"
+$LogFile = Join-Path $LogDir "PostInstall_$TimeStamp.log"
+$TranscriptFile = Join-Path $LogDir "PostInstall_Transcript_$TimeStamp.log"
 
 function Write-Log {
     param([string]$Message)
     $line = "[{0}] {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $Message
     Write-Host $line
-    Add-Content -Path $LogFile -Value $line
+    try {
+        [System.IO.File]::AppendAllText($LogFile, $line + [Environment]::NewLine)
+    } catch {
+        Write-Host "LOG WARNING: $($_.Exception.Message)" -ForegroundColor Yellow
+    }
 }
 
-Start-Transcript -Path $LogFile -Append -ErrorAction SilentlyContinue | Out-Null
+Start-Transcript -Path $TranscriptFile -Append -ErrorAction SilentlyContinue | Out-Null
 
-Write-Log "Starting GitHub-based post-install."
+Write-Log "Starting JAYJAYs IT Platform post-install."
+
+$GitHubCsvUrl = "https://raw.githubusercontent.com/jmjohnson5471/JayJaysToolkit/main/Templates/PostInstall/apps-standard.csv"
+$WorkDir = "$env:ProgramData\JAYJAYsITPlatform\PostInstall"
+New-Item -ItemType Directory -Force -Path $WorkDir | Out-Null
+$CsvPath = Join-Path $WorkDir "apps-standard.csv"
 Write-Log "Downloading apps-standard.csv from $GitHubCsvUrl"
-
-try {
-    Invoke-WebRequest -Uri $GitHubCsvUrl -OutFile $CsvPath -UseBasicParsing
-} catch {
-    Write-Log "ERROR downloading apps-standard.csv: $($_.Exception.Message)"
-    Stop-Transcript -ErrorAction SilentlyContinue | Out-Null
-    exit 1
-}
+try { Invoke-WebRequest -Uri $GitHubCsvUrl -OutFile $CsvPath -UseBasicParsing } catch { Write-Log "ERROR downloading CSV: $($_.Exception.Message)"; Stop-Transcript -ErrorAction SilentlyContinue | Out-Null; exit 1 }
 
 $Winget = Get-Command winget.exe -ErrorAction SilentlyContinue
+
 if (!$Winget) {
-    Write-Log "winget was not found. Apps will not install until winget is available."
+    Write-Log "ERROR: winget was not found. Apps will not install until winget is available."
     Stop-Transcript -ErrorAction SilentlyContinue | Out-Null
     exit 1
 }
 
+Write-Log "winget found at $($Winget.Source)"
+
 try {
+    Write-Log "Updating winget sources."
     winget source update | Out-Host
 } catch {
-    Write-Log "winget source update failed: $($_.Exception.Message)"
+    Write-Log "WARNING: winget source update failed: $($_.Exception.Message)"
 }
 
 $Apps = Import-Csv $CsvPath | Where-Object { $_.Enabled -match "true|yes|1" }
@@ -74,4 +77,7 @@ foreach ($App in $Apps) {
 }
 
 Write-Log "Post-install app installation complete."
+Write-Log "Main log: $LogFile"
+Write-Log "Transcript: $TranscriptFile"
+
 Stop-Transcript -ErrorAction SilentlyContinue | Out-Null
