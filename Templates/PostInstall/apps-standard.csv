@@ -1,0 +1,12 @@
+Name,Id,Source,Enabled,Description
+Chrome,Google.Chrome,winget,FALSE,Google Chrome
+7-Zip,7zip.7zip,winget,TRUE,7-Zip
+Adobe Reader,Adobe.Acrobat.Reader.64-bit,winget,FALSE,Adobe Acrobat Reader 64-bit
+VLC,VideoLAN.VLC,winget,FALSE,VLC Media Player
+Teams,Microsoft.Teams,winget,FALSE,Microsoft Teams
+PowerToys,Microsoft.PowerToys,winget,FALSE,Microsoft PowerToys
+Firefox,Mozilla.Firefox,winget,FALSE,Mozilla Firefox
+GreenShot,Greenshot.Greenshot,winget,FALSE,Greenshot Screenshot Tool
+Notepad++,Notepad++.Notepad++,winget,FALSE,Notepad++
+Google Earth,Google.EarthPro,winget,FALSE,Google Earth Pro
+PowerShell 7,Microsoft.PowerShell,winget,FALSE,PowerShell 7
