@@ -1,0 +1,9 @@
+{
+  "Name": "Software Repository Manager GUI",
+  "Category": "Software Repository",
+  "Description": "Pick a USB/local/network repository path and install profiles local-first with winget fallback.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "External"
+}

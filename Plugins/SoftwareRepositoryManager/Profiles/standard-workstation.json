@@ -1,0 +1,17 @@
+{
+  "Name": "Standard Workstation",
+  "Description": "Standard free apps, local repository preferred, winget fallback.",
+  "Apps": [
+    "Chrome",
+    "7-Zip",
+    "Adobe Reader",
+    "VLC",
+    "Teams",
+    "PowerToys",
+    "Firefox",
+    "Greenshot",
+    "Notepad++",
+    "Google Earth",
+    "PowerShell 7"
+  ]
+}

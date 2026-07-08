@@ -1,0 +1,122 @@
+[
+  {
+    "Name": "Chrome",
+    "WingetId": "Google.Chrome",
+    "Enabled": true,
+    "Installers": [
+      {
+        "RelativePath": "Chrome\\ChromeSetup.exe",
+        "Arguments": "/silent /install",
+        "RunAsAdmin": true
+      }
+    ]
+  },
+  {
+    "Name": "7-Zip",
+    "WingetId": "7zip.7zip",
+    "Enabled": true,
+    "Installers": [
+      {
+        "RelativePath": "7-Zip\\7z.exe",
+        "Arguments": "/S",
+        "RunAsAdmin": true
+      }
+    ]
+  },
+  {
+    "Name": "Adobe Reader",
+    "WingetId": "Adobe.Acrobat.Reader.64-bit",
+    "Enabled": true,
+    "Installers": [
+      {
+        "RelativePath": "Adobe Reader\\AcroRdrDC.exe",
+        "Arguments": "/sAll /rs /rps /msi EULA_ACCEPT=YES",
+        "RunAsAdmin": true
+      }
+    ]
+  },
+  {
+    "Name": "VLC",
+    "WingetId": "VideoLAN.VLC",
+    "Enabled": true,
+    "Installers": [
+      {
+        "RelativePath": "VLC\\vlc.exe",
+        "Arguments": "/S",
+        "RunAsAdmin": true
+      }
+    ]
+  },
+  {
+    "Name": "Teams",
+    "WingetId": "Microsoft.Teams",
+    "Enabled": true,
+    "Installers": []
+  },
+  {
+    "Name": "PowerToys",
+    "WingetId": "Microsoft.PowerToys",
+    "Enabled": true,
+    "Installers": []
+  },
+  {
+    "Name": "Firefox",
+    "WingetId": "Mozilla.Firefox",
+    "Enabled": true,
+    "Installers": [
+      {
+        "RelativePath": "Firefox\\Firefox Setup.exe",
+        "Arguments": "/S",
+        "RunAsAdmin": true
+      }
+    ]
+  },
+  {
+    "Name": "Greenshot",
+    "WingetId": "Greenshot.Greenshot",
+    "Enabled": true,
+    "Installers": [
+      {
+        "RelativePath": "Greenshot\\Greenshot-INSTALLER.exe",
+        "Arguments": "/VERYSILENT /NORESTART",
+        "RunAsAdmin": true
+      }
+    ]
+  },
+  {
+    "Name": "Notepad++",
+    "WingetId": "Notepad++.Notepad++",
+    "Enabled": true,
+    "Installers": [
+      {
+        "RelativePath": "Notepad++\\npp.exe",
+        "Arguments": "/S",
+        "RunAsAdmin": true
+      }
+    ]
+  },
+  {
+    "Name": "Google Earth",
+    "WingetId": "Google.EarthPro",
+    "Enabled": true,
+    "Installers": []
+  },
+  {
+    "Name": "PowerShell 7",
+    "WingetId": "Microsoft.PowerShell",
+    "Enabled": true,
+    "Installers": []
+  },
+  {
+    "Name": "Example Private App",
+    "WingetId": "",
+    "Enabled": false,
+    "Installers": [
+      {
+        "RelativePath": "Private App\\setup.exe",
+        "Arguments": "/quiet /norestart",
+        "RunAsAdmin": true
+      }
+    ]
+  }
+]

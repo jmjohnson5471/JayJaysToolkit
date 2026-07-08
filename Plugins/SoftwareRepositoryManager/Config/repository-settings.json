@@ -1,0 +1,10 @@
+{
+  "NetworkPath": "",
+  "LocalPath": "C:\\Software",
+  "FlashDriveFolderNames": [
+    "Software",
+    "JAYJAYsSoftware",
+    "Installers"
+  ],
+  "AllowWingetFallback": true
+}

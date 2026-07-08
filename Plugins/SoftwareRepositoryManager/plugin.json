@@ -1,0 +1,8 @@
+{
+  "Id": "SoftwareRepositoryManager",
+  "Name": "Software Repository Manager",
+  "Version": "1.0.0",
+  "Description": "Hybrid installer supporting USB, local folder, network share, and winget fallback.",
+  "Author": "JAYJAYs IT Platform",
+  "Enabled": true
+}

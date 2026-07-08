@@ -1,0 +1,9 @@
+{
+  "Name": "Install Standard Workstation Profile",
+  "Category": "Software Repository",
+  "Description": "Prompts for a repository path and installs the standard app profile.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Interactive"
+}
