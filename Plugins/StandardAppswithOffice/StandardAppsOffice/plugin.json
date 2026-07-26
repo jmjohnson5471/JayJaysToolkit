@@ -1,0 +1,8 @@
+{
+  "Id": "StandardAppsOffice",
+  "Name": "Standard Apps + Office",
+  "Version": "1.0.0",
+  "Description": "Install standard applications including Microsoft 365.",
+  "Author": "JayJaysToolkit",
+  "Enabled": true
+}

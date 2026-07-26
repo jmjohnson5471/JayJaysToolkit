@@ -1,0 +1,10 @@
+{
+  "Name": "Install Standard Apps + Office",
+  "Category": "Applications",
+  "Description": "Installs the standard software package including Microsoft 365.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console",
+  "Confirm": false
+}
