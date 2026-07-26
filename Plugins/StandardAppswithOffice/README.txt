@@ -1,1 +1,0 @@
-Copy your working Install-StandardApps-With-Office-Fixed.ps1 into the same folder as Install Standard Apps + Office.ps1.
