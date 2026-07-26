@@ -1,0 +1,9 @@
+{
+  "Name": "Standard Apps with Office",
+  "Category": "Managed Apps",
+  "Description": "Installs the JAYJAY standard application package including Microsoft 365.",
+  "RunAsAdmin": true,
+  "Hidden": false,
+  "Arguments": "",
+  "ExecutionMode": "Console"
+}
